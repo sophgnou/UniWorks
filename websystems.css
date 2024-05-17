@@ -1,0 +1,73 @@
+html{
+    font-family: Georgia;
+}
+
+.nav{
+    color: brown;
+    text-decoration: none;
+    position: absolute;
+    width: 120px;
+    text-align: left;
+}
+li{
+    text-decoration: none;
+}
+li ul {
+    display: none;
+    text-decoration: none;
+} 
+li:hover > ul {
+    display: block;
+} 
+a:link{
+    text-decoration: none;
+    color: firebrick;
+}
+a:visited{
+    color: firebrick;
+}
+a:hover{
+    color: lightcoral;
+}
+
+ol li{
+    color: maroon;
+}
+h1{
+    color: indianred;
+}
+h2{
+    color: brown;
+}
+h3{
+    color: firebrick
+}
+p{
+    color: brown;
+}
+input{
+    color: maroon;
+}
+
+body{
+    background-color: papayawhip;
+    padding: 25px;
+    margin: 15px;
+}
+
+.text{
+    padding-left: 150px;
+    margin: 10px;
+}
+
+table, tr, td{
+    border: 2px saddlebrown;
+
+}
+td{
+    text-align: left;
+    vertical-align: top;
+    margin: 10px;
+    padding: 10px;
+}
+
