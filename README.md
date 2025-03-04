@@ -12,7 +12,7 @@ This website will be:
 3. Developed by hand using HTML and CSS and not using any other tool
 Length: 5 web pages and 1 CSS file.
 ---
-31748 Programming on the Internet Grocery Store Assessment #1 <br />
+31748 Programming on the Internet Grocery Store Assessment 1 <br />
 Assessment Task 1: Online Web Interface to a Database System <br />
 Description: This is an individual programming assignment where students have to demonstrate the use of advanced DHTML, PHP, MySQL and JavaScript to solve the given problems in the design and the implementation of a website. The assignment consists of four components (or tasks) and addresses objectives 1, 2, 3, and 5. <br />
 Type: Project <br />
