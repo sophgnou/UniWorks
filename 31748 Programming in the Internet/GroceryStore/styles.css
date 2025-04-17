@@ -50,18 +50,30 @@ body {
 /*Header*/
 /*Navigation Bar*/
 .navbar {
-    overflow: hidden;
     background-color: lightseagreen;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     text-align: center;
-    padding: 10px 16px;
+    padding: 5px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    min-height: 70px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-
-#logo {
-
+/* logo using the icon - how to transform it*/
+.navbar .logo {
+    font-size: 40px;
+    color: antiquewhite;
+    margin-right: 15px;
+    transition: transform 0.3s;
+}
+.navbar .logo:hover {
+    transform: scale(1.1);
 }
 
 .navbar a {
@@ -69,34 +81,48 @@ body {
     padding: 10px 15px;
     font-size: 16px;
     color: antiquewhite;
+    line-height: 1;
 }
 
 .navbar a:hover{
     color: greenyellow;
 }
 
+
+
 /*Drop-down Menus*/
-.dropbtn {
-    border: none;
-    font-size: 16px;
-    color: antiquewhite;
-    padding: 12px 15px;
-}
-.dropdown {
+.dropdown{
     position: relative;
     display: inline-block;
 }
 
+.dropbtn {
+    border: none;
+    background: none;
+    font-size: 16px;
+    color: antiquewhite;
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s;
+}
+.dropbtn:hover {
+    color: greenyellow;
+}
+
 .dropcontent {
-    overflow: hidden;
-    top: 49px;
+    overflow-x: auto;
+    top: 70px;
     left: 0;
     display: none;
     position: fixed;
     background-color: lightblue;
+    width: 100vw;
     min-width: 100%;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    z-index: 100;
 }
 
 .dropcontent a {
@@ -121,6 +147,10 @@ body {
 }
 
 /*Main*/
+.page-text {
+    padding-left: 25px;
+}
+
 .display {
     display: grid;
     grid-template-columns: auto auto auto auto;
@@ -173,7 +203,7 @@ body {
     border: none;
     background-color: #20B2aa;
     text-align: center;
-    padding: 8px 12px;
+    padding: 5px 5px;
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -189,7 +219,7 @@ body {
 }
 .add-to-cart .material-icons{
     color: whitesmoke;
-    font-size: 18px;
+    font-size: 16px;
     margin-top: 10px;
 }
 .add-to-cart:hover {
@@ -212,3 +242,23 @@ body {
         grid-template-columns: 1fr 1fr;
     }
 }
+
+/* Footer */
+footer {
+    left: 0;
+    border: none;
+    width: 100%;
+    background-color: lightseagreen;
+    position: absolute;
+    text-align: center;
+    padding: 5px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    min-height: 70px;
+}
+footer ul {
+    text-decoration: none;
+}
+
