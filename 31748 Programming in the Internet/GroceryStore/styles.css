@@ -51,13 +51,17 @@ body {
 /*Navigation Bar*/
 .navbar {
     overflow: hidden;
-    background-color: gray;
+    background-color: lightseagreen;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     text-align: center;
     padding: 10px 16px;
+}
+
+#logo {
+
 }
 
 .navbar a {
@@ -85,7 +89,7 @@ body {
 
 .dropcontent {
     overflow: hidden;
-    top: 50px;
+    top: 49px;
     left: 0;
     display: none;
     position: fixed;
@@ -100,6 +104,7 @@ body {
     text-decoration: none;
     padding: 12px 16px;
     display: inline-block;
+    text-align: center;
 }
 
 .dropcontent a:hover{
@@ -111,7 +116,8 @@ body {
 }
 
 .dropdown:hover .dropbtn {
-    color: lightgreen;
+    color: greenyellow;
+    ;
 }
 
 /*Main*/
