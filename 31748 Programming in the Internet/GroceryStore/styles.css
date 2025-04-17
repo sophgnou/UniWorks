@@ -245,6 +245,7 @@ body {
 
 /* Footer */
 footer {
+    margin-top: 50px;
     left: 0;
     border: none;
     width: 100%;
@@ -258,7 +259,28 @@ footer {
     flex-wrap: wrap;
     min-height: 70px;
 }
+footer h2 {
+    color: whitesmoke;
+}
 footer ul {
+    color: whitesmoke;
     text-decoration: none;
+    list-style: none;
+    padding: 0;
+    margin-left: 20px;
+    text-align: left;
+}
+footer a {
+    text-decoration: none;
+    color: aliceblue;
+    font-weight: bold;
+}
+
+footer a:hover {
+    color: greenyellow;
+}
+
+footer .material-icons {
+    font-size: 16px;
 }
 
