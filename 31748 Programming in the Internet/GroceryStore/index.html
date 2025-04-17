@@ -13,7 +13,7 @@
         <!-- somehow putting the logo and aligning it to the nav bar is really hard, so this is the method that works for me -->
         <header>
             <nav class="navbar">
-                <a href="index.php" class="home logo"><i class="material-icons">storefront</i></a>
+                <a href="index.php" id="logo"><i class="material-icons">storefront</i></a>
                 <a href="index.php" class="home active"><i class="material-icons">home</i> Home</a>
                 <a href="#about" class="about"><i class="material-icons">info</i> About</a>  
                 <div class="dropdown">
@@ -27,93 +27,121 @@
                         <a href="#">Home Supplies</a>
                         <a href="#">Pet Items</a>
                 </div>
-                <form class="search" action="action.php">
+                <!--<form class="search" action="action.php">
                 <input type="text" placeholder="Search..." name="searchbar">
                 <button type="submit">
                     <i class="material-icons">search</i>
                 </button>
-                </form>
+                </form>-->
             </nav>
         </header>
 
         <main>
-        <!-- doing the grid layout gives me the shits, I cannot do this properlyyyyy -->
+        <!-- doing the grid layout gives me the shits, I cannot do this properlyyyyy 16/04/25 -->
+        <!-- I finally figured it out... 17/04/25-->
             <h1>Groceries</h1>
-            <p>Here is what is avaliable.</p> 
-            <!-- FOR THE FLOATING FIXED SHOPPING CART BUTTON: <i class="material-icons">shopping_cart</i>-->
+            <p>Here is what is avaliable.</p>
+            <buttom id="cart-button"><i class="material-icons">shopping_cart</i></buttom>
             <div class="row">
                 <div class="display">
                     <div class="item">
                         <img src="images/dog1.jpg" height="125">
-                        <h3>Item 1</h3>
-                        <p>item description</p>
-                        <button type="submit">
-                            <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
-                        </button>
+                        <div class="item-content">
+                            <h3>Item 1</h3>
+                            <p>item description</p>
+                            <p class="price">price</p>
+                            <button type="submit" class="add-to-cart">
+                                <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
+                            </button>
+                        </div>
                     </div>
                     <div class="item">
                         <img src="images/dog2.jpg" height="125">
-                        <h3>Item 2</h3>
-                        <p>item description</p>
-                        <button type="submit">
-                            <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
-                        </button>
+                        <div class="item-content">
+                            <h3>Item 2</h3>
+                            <p>item description</p>
+                            <p class="price">price</p>
+                            <button type="submit" class="add-to-cart">
+                                <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
+                            </button>
+                        </div>
                     </div>
                     <div class="item">
                         <img src="images/dog3.jpg" height="125">
-                        <h3>Item 3</h3>
-                        <p>item description</p>
-                        <button type="submit">
-                            <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
-                        </button>
+                        <div class="item-content">
+                            <h3>Item 3</h3>
+                            <p>item description</p>
+                            <p class="price">price</p>
+                            <button type="submit" class="add-to-cart">
+                                <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
+                            </button>
+                        </div>
                     </div>
                     <div class="item">
                         <img src="images/dog4.jpg" height="125">
-                        <h3>Item 4</h3>
-                        <p>item description</p>
-                        <button type="submit">
-                            <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
-                        </button>
+                        <div class="item-content">
+                            <h3>Item 4</h3>
+                            <p>item description</p>
+                            <p class="price">price</p>
+                            <button type="submit" class="add-to-cart">
+                                <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
+                            </button>
+                        </div>
                     </div>
                     <div class="item">
                         <img src="images/dog5.jpg" height="125">
-                        <h3>Item 5</h3>
-                        <p>item description</p>
-                        <button type="submit">
-                            <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
-                        </button>
+                        <div class="item-content">
+                            <h3>Item 5</h3>
+                            <p>item description</p>
+                            <p class="price">price</p>
+                            <button type="submit" class="add-to-cart">
+                                <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
+                            </button>
+                        </div>
                     </div>
                     <div class="item">
                         <img src="images/dog6.jpg" height="125">
-                        <h3>Item 6</h3>
-                        <p>item description</p>
-                        <button type="submit">
-                            <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
-                        </button>
+                        <div class="item-content">
+                            <h3>Item 6</h3>
+                            <p>item description</p>
+                            <p class="price">price</p>
+                            <button type="submit" class="add-to-cart">
+                                <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
+                            </button>
+                        </div>
                     </div>
                     <div class="item">
                         <img src="images/dog7.jpg" height="125">
-                        <h3>Item 7</h3>
-                        <p>item description</p>
-                        <button type="submit">
-                            <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
-                        </button>
+                        <div class="item-content">
+                            <h3>Item 7</h3>
+                            <p>item description</p>
+                            <p class="price">price</p>
+                            <button type="submit" class="add-to-cart">
+                                <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
+                            </button>
+                        </div>
                     </div>
                     <div class="item">
                         <img src="images/dog8.jpg" height="125">
-                        <h3>Item 8</h3>
-                        <p>item description</p>
-                        <button type="submit">
-                            <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
-                        </button>
+                        <div class="item-content">
+                            <h3>Item 8</h3>
+                            <p>item description</p>
+                            <p class="price">price</p>
+                            <button type="submit" class="add-to-cart">
+                                <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
+                            </button>
+                        </div>
                     </div>
                     <div class="item">
                         <img src="images/dog9.jpg" height="125">
-                        <h3>Item 9</h3>
-                        <p>item description</p>
-                        <button type="submit">
-                            <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
-                        </button>
+                        <div class="item-content">
+                            <h3>Item 9</h3>
+                            <p>item description</p>
+                            <p class="price">price</p>
+                            <button type="submit" class="add-to-cart">
+                                <p>ADD TO CART <i class="material-icons">shopping_cart</i></p>
+                            </button>
+                        </div>
                     </div>  
                 </div>
         </main>
