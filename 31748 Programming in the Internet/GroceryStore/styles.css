@@ -102,7 +102,7 @@ body {
     gap: 5px;
     transition: all 0.3s;
 }
-.dropbtn:hover {
+.dropbtn.active {
     color: greenyellow;
 }
 
@@ -116,7 +116,10 @@ body {
     width: 100vw;
     min-width: 100%;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 100;
+    z-index: 1000;
+}
+.dropcontent.show {
+    display: block !important;
 }
 
 .dropcontent a {
@@ -130,14 +133,6 @@ body {
 .dropcontent a:hover{
     color: teal;
     background-color: lightskyblue;
-}
-.dropdown:hover .dropcontent {
-        display: block;
-}
-
-.dropdown:hover .dropbtn {
-    color: greenyellow;
-    ;
 }
 
 /* Floating Search Bar*/

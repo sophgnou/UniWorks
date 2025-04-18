@@ -16,10 +16,10 @@
         <header>
             <nav class="navbar">
                 <a href="index.php" class="logo"><i class="material-icons logo">storefront</i></a>
-                <a href="index.php" class="home active"><i class="material-icons">home</i> Home</a>
-                <a href="#about" class="about"><i class="material-icons">info</i> About</a>  
+                <a href="index.html" class="home active"><i class="material-icons">home</i> Home</a>
+                <a href="about.html" class="about"><i class="material-icons">info</i> About</a>  
                 <div class="dropdown">
-                    <button class="dropbtn" onClick="toggleDropDown()"><i class="material-icons">arrow_drop_down_circle</i> Categories</button>
+                    <button data-toggle-nav class="dropbtn" onClick="toggleNav()"><i class="material-icons">arrow_drop_down_circle</i> Categories</button>
                 <div class="dropcontent" id="contentDown">
                         <a href="#">Frozen</a>
                         <a href="#">Meat</a>
@@ -45,7 +45,9 @@
                 <h1>Groceries</h1>
                 <p>Here is what is avaliable.</p>
             </div>
-            <buttom id="cart-button"><i class="material-icons">shopping_cart</i></buttom>
+            <a href="cart.html">
+                <button id="cart-button"><i class="material-icons">shopping_cart</i></button>
+            </a>
             <div class="row">
                 <div class="display">
                     <div class="item">
@@ -160,5 +162,25 @@
             </ul>
             <p id="copyright"><i class="material-icons link">copyright</i> 2025 Sophie Gnoukhanthone 14241994</p>
         </footer>
+        <script>
+        function toggleNav() {
+        const dropContent = document.getElementById('contentDown');
+        const dropBtn = document.querySelector('[data-toggle-nav]');
+        
+        dropContent.classList.toggle('show');
+        dropBtn.classList.toggle('active');
+        }
+
+        // Close when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown')) {
+                const dropContent = document.getElementById('contentDown');
+                const dropBtn = document.querySelector('[data-toggle-nav]');
+                
+                dropContent.classList.remove('show');
+                dropBtn.classList.remove('active');
+            }
+        });
+        </script>
     </body>
 </html>
