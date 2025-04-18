@@ -1,3 +1,30 @@
+<?php 
+    $connection = mysqli_connect('localhost', 'root', '', 'DATABASENAME');
+    $link = mysqli_connect("localhost", non, '', product_example)
+
+    if(!$link)
+    die("Could not connect to Server");
+
+    $query_string = "select * from product_example";
+    $result = mysqli_query($link, $query_string);
+
+    $num_rows = mysqli_num_rows($result);
+
+    if($num_rows > 0){
+        print "<table border=0>";
+        //get rows from table
+        while($a_row = mysqli_fetch_row($result)){
+            print "<tr>\n";
+            //get columns each row
+            foreach($a_row as $field)
+                print "\t<td>$field</td>\n";
+            print "</tr>";
+        }
+        print "</table>";
+    }
+    mysqli_close($link);
+?>
+
 <?php
     session_start();
     if (isset($_SESSION["counter"])){
@@ -6,8 +33,6 @@
     else{
         $_SESSION["counter"] = 1;
     }
-
-    $connection = mysqli_connect('localhost', 'root', '', 'DATABASENAME');
 
     $counter = $_session["counter"];
     $msg="You have visited this page ".counter" times.";
