@@ -7,6 +7,8 @@
         $_SESSION["counter"] = 1;
     }
 
+    $connection = mysqli_connect('localhost', 'root', '', 'DATABASENAME');
+
     $counter = $_session["counter"];
     $msg="You have visited this page ".counter" times.";
 

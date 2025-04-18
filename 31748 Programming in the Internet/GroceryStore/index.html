@@ -157,6 +157,7 @@
             <ul>
                 <li>123 Fake Street, Suburb, State, Country 1234</li>
                 <li>XXXX-XXX-XXX</li>
+                <li><php? echo $_GET</li>
                 <li><a href="" id="linkedin">Linkedin</a></li>
             </ul>
             <p id="copyright"><i class="material-icons link">copyright</i> 2025 Sophie Gnoukhanthone 14241994</p>
@@ -170,7 +171,6 @@
         dropContent.classList.toggle('show');
         dropBtn.classList.toggle('active');
         }
-
         // Close when clicking outside
         document.addEventListener('click', function(event) {
             if (!event.target.closest('.dropdown')) {
