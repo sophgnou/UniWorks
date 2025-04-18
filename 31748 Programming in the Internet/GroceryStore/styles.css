@@ -61,7 +61,7 @@ body {
 }
 /* logo using the icon - how to transform it*/
 .navbar .logo {
-    font-size: 40px;
+    font-size: 50px;
     color: antiquewhite;
     margin-right: 15px;
     transition: transform 0.3s;
