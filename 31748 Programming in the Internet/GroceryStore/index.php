@@ -1,4 +1,6 @@
 <?php
+
+
 // Database connection
 $connection = mysqli_connect('localhost', 'root', '', 'assignment1');
 
@@ -16,9 +18,37 @@ if (!$result) {
     die("Query failed: " . mysqli_error($connection));
 } 
 
+// Initialize variables
+$products = [];
+$searchQuery = "";
+
+// Check if search form was submitted
+if (isset($_GET['search']) && !empty($_GET['search'])) {
+    $searchTerm = mysqli_real_escape_string($connection, $_GET['search']);
+    $query = "SELECT * FROM products WHERE product_name LIKE '%$searchTerm%'";
+    $searchQuery = " - Search results for: " . htmlspecialchars($_GET['search']);
+} else {
+    // Default query (all products)
+    $query = "SELECT * FROM products";
+}
+
+// Execute query
+$result = mysqli_query($connection, $query);
+
+if (!$result) {
+    die("Query failed: " . mysqli_error($connection));
+}
+
+// Fetch all results into array
+while ($row = mysqli_fetch_assoc($result)) {
+    $products[] = $row;
+}
+
+
+/*
 $keywords = $_REQUEST['search'];
 $query_string = "select * FROM products WHERE product_name LIKE '%$keywords%'";
-$num_rows = mysqli_query(mysql: $connection, query: $query_string);
+$num_rows = mysqli_query( $connection, $query_string);
 
 if ($num_rows > 0) {
     print "<table border='0'>";
@@ -30,10 +60,11 @@ if ($num_rows > 0) {
     }
     print "</table>";
 }
+*/
 
 // Close connection (optional, PHP will close it automatically when script ends)
 mysqli_close($connection);
-?>
+?> 
 
 
 <!DOCTYPE html>
@@ -53,12 +84,13 @@ mysqli_close($connection);
         <header>
             <nav class="navbar">
                 <a href="index.php" class="logo"><i class="material-icons logo">storefront</i></a>
-                <a href="index.html" class="home active"><i class="material-icons">home</i> Home</a>
+                <a href="index.php" class="home active"><i class="material-icons">home</i> Home</a>
                 <a href="about.html" class="about"><i class="material-icons">info</i> About</a>  
                 <div class="dropdown">
                     <button data-toggle-nav class="dropbtn" onClick="toggleNav()"><i class="material-icons">arrow_drop_down_circle</i> Categories</button>
                 <div class="dropcontent" id="contentDown">
                         <a href="#">Frozen</a>
+                            
                         <a href="#">Meat</a>
                         <a href="#">Drinks</a>
                         <a href="#">Dairy Product</a>
@@ -68,10 +100,10 @@ mysqli_close($connection);
                 </div>
             </nav>
             <div class="search-cont">
-                <form class="search-bar" action="/index.php" methods="get">
-                    <input type="text" placeholder="Search products..." name="search">
+                <form class="search-bar" action="index.php" method="get">
+                    <input type="text" placeholder="Search products..." name="search" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
                     <button type="submit"><i class="material-icons">search</i></button>
-                    </form>
+                </form>
             </div>
         </header>
 
@@ -79,7 +111,7 @@ mysqli_close($connection);
         <!-- doing the grid layout gives me the shits, I cannot do this properlyyyyy 16/04/25 -->
         <!-- I finally figured it out... 17/04/25-->
             <div class="page-text">
-                <h1>Groceries</h1>
+                <h1>Groceries <?= $searchQuery ?> </h1>
                 <p>Here is what is avaliable.</p>
             </div>
     
@@ -88,20 +120,24 @@ mysqli_close($connection);
             </a>
 
             <div class="display">
-            <?php foreach ($result as $product): ?>
-                <div class="item">
-                    <img src="images/product_<?= $product['product_id'] ?>.jpg" height="125">
-                    <div class="item-content">
-                        <h3><?= htmlspecialchars($product['product_name']) ?></h3>
-                        <p><?= htmlspecialchars($product['unit_quantity']) ?></p>
-                        <p class="price">$<?= number_format($product['unit_price'], 2) ?></p>
-                        <button type="submit" class="add-to-cart">
-                            <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                        </button>
-                </div>
-                </div>
-                <?php endforeach; ?>
-            </div>
+                <?php if (count($products) > 0): ?>
+                    <?php foreach ($products as $product): ?>
+                        <div class="item">
+                            <img src="images/product_<?= $product['product_id'] ?>.jpg" height="125" alt="<?= htmlspecialchars($product['product_name']) ?>">
+                            <div class="item-content">
+                                <h3><?= htmlspecialchars($product['product_name']) ?></h3>
+                                <p><?= htmlspecialchars($product['unit_quantity']) ?></p>
+                                <p class="price">$<?= number_format($product['unit_price'], 2) ?></p>
+                                <button type="submit" class="add-to-cart" data-product-id="<?= $product['product_id'] ?>"></button>>
+                                    <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
+                                </button>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="no-results">No products found matching your search.</p>
+                <?php endif; ?>
+            </div>  
             <!--
             <div class="row">
                 <div class="display">
@@ -218,6 +254,7 @@ mysqli_close($connection);
             <p id="copyright"><i class="material-icons link">copyright</i> 2025 Sophie Gnoukhanthone 14241994</p>
         </footer>
         <script src="js/togglenav.js"></script>
+        <script src="js/add-to-cart.js"></script>
         <!--<script type="text/javascript">
         function toggleNav() {
         const dropContent = document.getElementById('contentDown');
