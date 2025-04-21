@@ -1,4 +1,5 @@
 <?php
+//access to cart data
 session_start();
 
 // Database connection
