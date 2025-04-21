@@ -1,3 +1,40 @@
+<?php
+// Database connection
+$connection = mysqli_connect('localhost', 'root', '', 'assignment1');
+
+// Check connection
+if (!$connection) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+// Fetch products
+$query = "SELECT * FROM products";
+$result = mysqli_query($connection, $query);
+
+// Check if query succeeded
+if (!$result) {
+    die("Query failed: " . mysqli_error($connection));
+} 
+
+$keywords = $_REQUEST['search'];
+$query_string = "select * FROM products WHERE product_name LIKE '%$keywords%'";
+$num_rows = mysqli_query(mysql: $connection, query: $query_string);
+
+if ($num_rows > 0) {
+    print "<table border='0'>";
+    while ($row = mysqli_fetch_assoc(result: $result)) {
+        echo "<tr>";
+        echo "<td>" . $row['product_name'] . "</td>";
+        echo "<td>" . $row['unit_price'] . "</td>";
+        echo "</tr>";
+    }
+    print "</table>";
+}
+
+// Close connection (optional, PHP will close it automatically when script ends)
+mysqli_close($connection);
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +68,7 @@
                 </div>
             </nav>
             <div class="search-cont">
-                <form class="search-bar" action="action.php">
+                <form class="search-bar" action="/index.php" methods="get">
                     <input type="text" placeholder="Search products..." name="search">
                     <button type="submit"><i class="material-icons">search</i></button>
                     </form>
@@ -45,9 +82,27 @@
                 <h1>Groceries</h1>
                 <p>Here is what is avaliable.</p>
             </div>
+    
             <a href="cart.html">
                 <button id="cart-button"><i class="material-icons">shopping_cart</i></button>
             </a>
+
+            <div class="display">
+            <?php foreach ($result as $product): ?>
+                <div class="item">
+                    <img src="images/product_<?= $product['product_id'] ?>.jpg" height="125">
+                    <div class="item-content">
+                        <h3><?= htmlspecialchars($product['product_name']) ?></h3>
+                        <p><?= htmlspecialchars($product['unit_quantity']) ?></p>
+                        <p class="price">$<?= number_format($product['unit_price'], 2) ?></p>
+                        <button type="submit" class="add-to-cart">
+                            <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
+                        </button>
+                </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <!--
             <div class="row">
                 <div class="display">
                     <div class="item">
@@ -149,7 +204,7 @@
                             </button>
                         </div>
                     </div>  
-                </div>
+                </div> -->
         </main>
 
         <footer>
