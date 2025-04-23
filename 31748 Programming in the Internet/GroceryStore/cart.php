@@ -1,52 +1,34 @@
 <?php
 session_start();
 
-// Redirect if cart is empty
-if (empty($_SESSION['cart'])) {
-    header('Location: index.php');
-    exit;
-}
-
-// Database connection
-$connection = mysqli_connect('localhost', 'root', '', 'assignment1');
-
-// Check connection
-if (!$connection) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
-// Fetch products
-$query = "SELECT * FROM products";
-$result = mysqli_query($connection, $query);
-
-// Check if query succeeded
-if (!$result) {
-    die("Query failed: " . mysqli_error($connection));
-} 
-
-// Initialize variables
-$products = [];
-$searchQuery = "";
-/*
-$keywords = $_REQUEST['search'];
-$query_string = "select * FROM products WHERE product_name LIKE '%$keywords%'";
-$num_rows = mysqli_query( $connection, $query_string);
-
-if ($num_rows > 0) {
-    print "<table border='0'>";
-    while ($row = mysqli_fetch_assoc(result: $result)) {
-        echo "<tr>";
-        echo "<td>" . $row['product_name'] . "</td>";
-        echo "<td>" . $row['unit_price'] . "</td>";
-        echo "</tr>";
+// Handle remove from cart requests
+if (isset($_GET['remove'])) {
+    $product_id = $_GET['remove'];
+    if (isset($_SESSION['cart'][$product_id])) {
+        unset($_SESSION['cart'][$product_id]);
     }
-    print "</table>";
+    header("Location: cart.php");
+    exit();
 }
-*/
 
-// Close connection (optional, PHP will close it automatically when script ends)
-mysqli_close($connection);
-?> 
+// Handle quantity updates
+if (isset($_POST['update_cart'])) {
+    foreach ($_POST['quantities'] as $product_id => $quantity) {
+        if (isset($_SESSION['cart'][$product_id])) {
+            $quantity = (int)$quantity;
+            if ($quantity > 0 && $quantity <= $_SESSION['cart'][$product_id]['max_stock']) {
+                $_SESSION['cart'][$product_id]['quantity'] = $quantity;
+            }
+        }
+    }
+    header("Location: cart.php");
+    exit();
+}
+
+// Database connection for stock validation
+$connection = mysqli_connect('localhost', 'root', '', 'assignment1');
+?>
+
 
 
 <!DOCTYPE html>
@@ -66,53 +48,94 @@ mysqli_close($connection);
         <header>
             <nav class="navbar">
                 <a href="index.php" class="logo"><i class="material-icons logo">storefront</i></a>
-                <a href="index.html" class="home active"><i class="material-icons">home</i> Home</a>
+                <a href="index.php" class="home active"><i class="material-icons">home</i> Home</a>
                 <a href="about.html" class="about"><i class="material-icons">info</i> About</a>  
                 <div class="dropdown">
-                    <button data-toggle-nav class="dropbtn" onClick="toggleNav()"><i class="material-icons">arrow_drop_down_circle</i> Categories</button>
+                    <button data-toggle-nav class="dropbtn" onClick="toggleNav()"><i class="material-icons">arrow_drop_down_circle</i> Food & Groceries</button>
                 <div class="dropcontent" id="contentDown">
+                    <div class="submenu">
                         <a href="#">Frozen</a>
-                        <a href="#">Meat</a>
-                        <a href="#">Drinks</a>
-                        <a href="#">Dairy Product</a>
-                        <a href="#">Health Care</a>
-                        <a href="#">Home Supplies</a>
-                        <a href="#">Pet Items</a>
+
+                        <a href="">Fresh</a>
+                        <div class="submenu-cont">
+                            <a href="#">Meat</a>
+                            <a herf="#">Fruits</a>
+                            <a href="#">Dairy</a>
+                        </div>
+
+                        <a href="#">Beverages</a>
+                        <a href="">Snacks</a>
+
+                        <a href="">Household</a>
+                        <div class="submenu-cont">
+                            <a href="#">Health Care</a>
+                            <a href="#">Home Supplies</a>
+                            <a href="#">Pet Items</a>
+                        </div>
+                        </div>
                 </div>
             </nav>
         </header>
 
-        <main>
-            <div class="page-text">
-                <h1>Your Shopping Cart</h1>
-            </div>
-
-            <div class="cart-items">
-                <?php foreach ($_SESSION['cart'] as $id => $item): ?>
-                    <div class="cart-item">
-                        <img src="<?= $item['image'] ?>" alt="<?= htmlspecialchars($item['name']) ?>">
-                        <div class="item-details">
-                            <h3><?= htmlspecialchars($item['name']) ?></h3>
-                            <p>Price: $<?= number_format($item['price'], 2) ?></p>
-                            <p>Quantity: <?= $item['quantity'] ?></p>
-                            <p>Subtotal: $<?= number_format($item['price'] * $item['quantity'], 2) ?></p>
-                            <button class="remove-from-cart" data-product-id="<?= $id ?>">Remove</button>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
         
-            <div class="cart-total">
-                <h2>Total: $<?= number_format(
-                    array_sum(array_map(
-                        function($item) { return $item['price'] * $item['quantity']; },
-                        $_SESSION['cart']
-                    )),
-                    2
-                ) ?></h2>
-                <a href="checkout.php" class="checkout-btn">Proceed to Checkout</a>
-            </div>
-        </main>
+    <main>
+        <h1>Your Shopping Cart</h1>
+        
+        <?php if (empty($_SESSION['cart'])): ?>
+            <p>Your cart is empty.</p>
+        <?php else: ?>
+            <form method="post" action="cart.php">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        $total = 0;
+                        foreach ($_SESSION['cart'] as $product_id => $item): 
+                            // Verify current stock
+                            $query = "SELECT in_stock FROM products WHERE product_id = $product_id";
+                            $result = mysqli_query($connection, $query);
+                            $current_stock = mysqli_fetch_assoc($result)['in_stock'];
+                            
+                            $subtotal = $item['price'] * $item['quantity'];
+                            $total += $subtotal;
+                        ?>
+                            <tr>
+                                <td><?= htmlspecialchars($item['name']) ?> (<?= $item['unit'] ?>)</td>
+                                <td>$<?= number_format($item['price'], 2) ?></td>
+                                <td>
+                                    <input type="number" name="quantities[<?= $product_id ?>]" 
+                                           value="<?= $item['quantity'] ?>" 
+                                           min="1" 
+                                           max="<?= min($item['max_stock'], $current_stock) ?>">
+                                </td>
+                                <td>$<?= number_format($subtotal, 2) ?></td>
+                                <td><a href="cart.php?remove=<?= $product_id ?>">Remove</a></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">Total</td>
+                            <td>$<?= number_format($total, 2) ?></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div class="cart-actions">
+                    <button type="submit" name="update_cart" class="update-btn">Update Cart</button>
+                    <a href="checkout.php" class="checkout-btn">Proceed to Checkout</a>
+                </div>
+            </form>
+        <?php endif; ?>
+    </main>
 
 
         <footer>
@@ -128,3 +151,4 @@ mysqli_close($connection);
         <script src="js/togglenav.js"></script>
     </body>
 </html>
+<?php mysqli_close($connection); ?>

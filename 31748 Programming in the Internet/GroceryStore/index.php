@@ -1,4 +1,50 @@
 <?php
+// cart
+session_start();
+
+// Initialize cart if it doesn't exist
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
+// Handle add to cart requests
+if (isset($_POST['add_to_cart'])) {
+    $product_id = $_POST['product_id'];
+    $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
+    
+    // Database connection
+    $connection = mysqli_connect('localhost', 'root', '', 'assignment1');
+    
+    // Check if product exists and has sufficient stock
+    $query = "SELECT * FROM products WHERE product_id = $product_id";
+    $result = mysqli_query($connection, $query);
+    
+    if ($result && $product = mysqli_fetch_assoc($result)) {
+        if ($product['in_stock'] >= $quantity) {
+            // Add to cart or update quantity
+            if (isset($_SESSION['cart'][$product_id])) {
+                $_SESSION['cart'][$product_id]['quantity'] += $quantity;
+            } else {
+                $_SESSION['cart'][$product_id] = [
+                    'name' => $product['product_name'],
+                    'price' => $product['unit_price'],
+                    'quantity' => $quantity,
+                    'unit' => $product['unit_quantity'],
+                    'max_stock' => $product['in_stock']
+                ];
+            }
+        } else {
+            $_SESSION['error'] = "Not enough stock available for {$product['product_name']}";
+        }
+    }
+    mysqli_close($connection);
+    
+    // Redirect to prevent form resubmission
+    header("Location: ".$_SERVER['PHP_SELF']);
+    exit();
+}
+
+
 // Database connection
 $connection = mysqli_connect('localhost', 'root', '', 'assignment1');
 
@@ -131,133 +177,30 @@ mysqli_close($connection);
                 <p>Here is what is avaliable.</p>
             </div>
     
-            <a href="cart.html">
+            <a href="cart.php">
                 <button id="cart-button"><i class="material-icons">shopping_cart</i></button>
             </a>
 
             <div class="display">
-                <?php if (count($products) > 0): ?>
-                    <?php foreach ($products as $product): ?>
-                        <div class="item">
-                            <img src="images/product_<?= $product['product_id'] ?>.jpg" height="125" alt="<?= htmlspecialchars($product['product_name']) ?>">
-                            <div class="item-content">
-                                <h3><?= htmlspecialchars($product['product_name']) ?></h3>
-                                <p><?= htmlspecialchars($product['unit_quantity']) ?></p>
-                                <p class="price">$<?= number_format($product['unit_price'], 2) ?></p>
-                                <button type="submit" class="add-to-cart" data-product-id="<?= $product['product_id'] ?>">
-                                    <span class="cart-text">ADD TO CART</span>
-                                    <i class="material-icons cart-icon">add_shopping_cart</i>
-                                </button>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p class="no-results">No products found matching your search.</p>
-                <?php endif; ?>
+            <?php foreach ($products as $product): ?>
+                <div class="item">
+                    <img src="images/product_<?= $product['product_id'] ?>.jpg" height="125" alt="<?= htmlspecialchars($product['product_name']) ?>">
+                    <div class="item-content">
+                        <h3><?= htmlspecialchars($product['product_name']) ?></h3>
+                        <p><?= htmlspecialchars($product['unit_quantity']) ?></p>
+                        <p class="price">$<?= number_format($product['unit_price'], 2) ?></p>
+                        <form method="post" action="">
+                            <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>">
+                            <input type="number" name="quantity" value="1" min="1" max="<?= $product['in_stock'] ?>">
+                            <button type="submit" name="add_to_cart" class="add-to-cart">
+                                <span class="cart-text">ADD TO CART</span>
+                                <i class="material-icons cart-icon">add_shopping_cart</i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            <?php endforeach; ?>
             </div>  
-            <!--
-            <div class="row">
-                <div class="display">
-                    <div class="item">
-                        <img src="images/dog1.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 1</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="images/dog2.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 2</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="images/dog3.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 3</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="images/dog4.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 4</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="images/dog5.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 5</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="images/dog6.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 6</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="images/dog7.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 7</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="images/dog8.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 8</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="images/dog9.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 9</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>  
-                </div> -->
         </main>
 
         <footer>

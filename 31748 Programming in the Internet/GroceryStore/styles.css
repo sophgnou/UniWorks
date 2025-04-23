@@ -292,6 +292,9 @@ body {
     font-size: 0.9rem;
     flex-grow: 1; /* price and button pushed down*/
 }
+span {
+    color: whitesmoke;
+}
 /* price & button section */
 .price {
     font-weight: bold;
@@ -400,4 +403,67 @@ footer .material-icons {
     margin: 25px 25px;
     font-weight: bold;
     text-align:  right;
+}
+
+/* CHECK OUT PAGE */
+
+/* Cart Page Styles */
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.cart-table th, .cart-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-table th {
+    background-color: lightseagreen;
+    color: white;
+}
+
+.cart-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+.cart-table input[type="number"] {
+    width: 60px;
+    padding: 5px;
+}
+
+.cart-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.update-btn, .checkout-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.update-btn {
+    background-color: #20B2AA;
+    color: white;
+}
+
+.checkout-btn {
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+}
+
+.update-btn:hover {
+    background-color: #008B8B;
+}
+
+.checkout-btn:hover {
+    background-color: #45a049;
 }
