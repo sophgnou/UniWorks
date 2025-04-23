@@ -1,6 +1,4 @@
 <?php
-
-
 // Database connection
 $connection = mysqli_connect('localhost', 'root', '', 'assignment1');
 
@@ -8,7 +6,11 @@ $connection = mysqli_connect('localhost', 'root', '', 'assignment1');
 if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 }
+// Initialize variables
+$products = [];
+$searchQuery = "";
 
+/*
 // Fetch products
 $query = "SELECT * FROM products";
 $result = mysqli_query($connection, $query);
@@ -17,10 +19,7 @@ $result = mysqli_query($connection, $query);
 if (!$result) {
     die("Query failed: " . mysqli_error($connection));
 } 
-
-// Initialize variables
-$products = [];
-$searchQuery = "";
+    */
 
 // Check if search form was submitted
 if (isset($_GET['search']) && !empty($_GET['search'])) {
@@ -29,7 +28,14 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
     $searchQuery = " - Search results for: " . htmlspecialchars($_GET['search']);
 } else {
     // Default query (all products)
-    $query = "SELECT * FROM products";
+    $query = "SELECT p.* FROM products p
+              INNER JOIN (
+                  SELECT product_name, MIN(product_id) as min_id
+                  FROM products
+                  GROUP BY product_name, unit_quantity
+              ) as unique_products
+              ON p.product_id = unique_products.min_id
+              ORDER BY p.product_name";
 }
 
 // Execute query
@@ -43,7 +49,6 @@ if (!$result) {
 while ($row = mysqli_fetch_assoc($result)) {
     $products[] = $row;
 }
-
 
 /*
 $keywords = $_REQUEST['search'];
@@ -61,7 +66,6 @@ if ($num_rows > 0) {
     print "</table>";
 }
 */
-
 // Close connection (optional, PHP will close it automatically when script ends)
 mysqli_close($connection);
 ?> 
@@ -89,6 +93,7 @@ mysqli_close($connection);
                 <div class="dropdown">
                     <button data-toggle-nav class="dropbtn" onClick="toggleNav()"><i class="material-icons">arrow_drop_down_circle</i> Food & Groceries</button>
                 <div class="dropcontent" id="contentDown">
+                    <div class="submenu">
                         <a href="#">Frozen</a>
 
                         <a href="">Fresh</a>
@@ -106,6 +111,7 @@ mysqli_close($connection);
                             <a href="#">Health Care</a>
                             <a href="#">Home Supplies</a>
                             <a href="#">Pet Items</a>
+                        </div>
                         </div>
                 </div>
             </nav>
@@ -138,8 +144,9 @@ mysqli_close($connection);
                                 <h3><?= htmlspecialchars($product['product_name']) ?></h3>
                                 <p><?= htmlspecialchars($product['unit_quantity']) ?></p>
                                 <p class="price">$<?= number_format($product['unit_price'], 2) ?></p>
-                                <button type="submit" class="add-to-cart" data-product-id="<?= $product['product_id'] ?>"></button>>
-                                    <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
+                                <button type="submit" class="add-to-cart" data-product-id="<?= $product['product_id'] ?>">
+                                    <span class="cart-text">ADD TO CART</span>
+                                    <i class="material-icons cart-icon">add_shopping_cart</i>
                                 </button>
                             </div>
                         </div>
