@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Database connection
         $connection = mysqli_connect('localhost', 'root', '', 'assignment1');
         
-        // 1. Save customer information
+        // Save customer information
         $query = "INSERT INTO orders (fullname, street, suburb, state, country, postcode, email, phone, payment_method, total) 
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($connection, $query);
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $total += $item['price'] * $item['quantity'];
         }
         
-        mysqli_stmt_bind_param($stmt, 'sssssssssd', 
+        mysqli_stmt_bind_param($stmt, 'customerdata', 
             $_POST['fullname'],
             $_POST['street'],
             $_POST['suburb'],
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_stmt_execute($stmt);
         $orderId = mysqli_insert_id($connection);
         
-        // 2. Save order items
+        // Save order items
         foreach ($_SESSION['cart'] as $product_id => $item) {
             $query = "INSERT INTO order_items (order_id, product_id, quantity, price) 
                       VALUES (?, ?, ?, ?)";
@@ -71,9 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         mysqli_close($connection);
         
-        // 3. Clear the cart and redirect to confirmation
+        // Clear the cart and redirect to confirmation
         unset($_SESSION['cart']);
-        header("Location: order_confirmation.php?order_id=$orderId");
+        header("Location: confirmation.php?order_id=$orderId");
         exit();
     } else {
         // Show errors

@@ -136,73 +136,65 @@ foreach ($_SESSION['cart'] as $item) {
             </div>
 
             <h2>Checkout</h2>
-            <form name="form1" id="form1" method="post" action="validation_php.php">
-            <table border="0">
-            <tr>
-               <td style="width:110px">
-                  Full Name
-                  <span style="color:red">*</span>
-               </td>
-               <td style="width:150px">
-                  <input type="text" id="fullnaem " name="fullname" required>
-               </td>
-            </tr>
-            <tr>
-               <td>
-                  Address
-                  <span style="color:red">*</span>
-               </td>
-               <td>
-                  <input type="text" id="street" name="street" required>
-               </td>
-               <td>
-                  <input type="text" id="suburb" name="suburb" required>
-               </td>
-               <td>
-               <select name="state" id="state">
-                    <option value="NSW">NSW</option>
-                    <option value="ACT">ACT</option>
-                    <option value="VIC">VIC</option>
-                    <option value="QLD">QLD</option>
-                    <option value="SA">SA</option>
-                    <option value="WA">WA</option>
-                    <option value="NT">NT</option>
-                    <option value="TAS">TAS</option>
-                </select>
-                </td>
-                <td>
-                  <input type="text" id="country" name="country" required>
-               </td>
-                <td>
-                  <input type="number" id="postcode" name="postcode" required>
-                </td>
-            </tr>
-            <tr>
-               <td>
-                Email
-                <span style="color:red">*</span>
-               </td>
-               <td>
-                  <input type="email" id="email" name="email" required>
-               </td>
-            </tr>
-            <tr>
-               <td>
-                Phone Number
-                <span style="color:red">*</span>
-               </td>
-               <td>
-                  <input type="tel" id="phone" name="phone" required>
-               </td>
-            </tr>
-            <tr>
-               <td colspan="2" align="center">
-                  <input type="submit" value = "Submit">
-               </td>
-            </tr>
-         </table>
-      </form>
-      
+            <?php if (!empty($_SESSION['checkout_errors'])): ?>
+                <div class="error-messages">
+                    <h3>Please fix these errors:</h3>
+                    <ul>
+                        <?php foreach ($_SESSION['checkout_errors'] as $error): ?>
+                            <li><?= htmlspecialchars($error) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+                <?php unset($_SESSION['checkout_errors']); ?>
+            <?php endif; ?>
+
+            <form name="form1" id="form1" method="post" action="confirmation.php">
+                <table border="0">
+                    <tr>
+                        <td style="width:110px">
+                            Full Name <span style="color:red">*</span>
+                        </td>
+                        <td style="width:150px">
+                            <input type="text" id="fullname" name="fullname" value="<?= isset($_POST['fullname']) ? htmlspecialchars($_POST['fullname']) : '' ?>" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Address <span style="color:red">*</span></td>
+                        <td><input type="text" id="street" name="street" placeholder="Street" value="<?= isset($_POST['street']) ? htmlspecialchars($_POST['street']) : '' ?>" required></td>
+                        <td><input type="text" id="suburb" name="suburb" placeholder="Suburb" value="<?= isset($_POST['suburb']) ? htmlspecialchars($_POST['suburb']) : '' ?>" required></td>
+                        <td>
+                            <select name="state" id="state" required>
+                                <option value="">Select State</option>
+                                <option value="NSW" <?= (isset($_POST['state']) && $_POST['state'] === 'NSW') ? 'selected' : '' ?>>NSW</option>
+                                <option value="ACT" <?= (isset($_POST['state']) && $_POST['state'] === 'ACT') ? 'selected' : '' ?>>ACT</option>
+                                <option value="VIC" <?= (isset($_POST['state']) && $_POST['state'] === 'VIC') ? 'selected' : '' ?>>VIC</option>
+                                <option value="QLD" <?= (isset($_POST['state']) && $_POST['state'] === 'QLD') ? 'selected' : '' ?>>QLD</option>
+                                <option value="SA" <?= (isset($_POST['state']) && $_POST['state'] === 'SA') ? 'selected' : '' ?>>SA</option>
+                                <option value="WA" <?= (isset($_POST['state']) && $_POST['state'] === 'WA') ? 'selected' : '' ?>>WA</option>
+                                <option value="NT" <?= (isset($_POST['state']) && $_POST['state'] === 'NT') ? 'selected' : '' ?>>NT</option>
+                                <option value="TAS" <?= (isset($_POST['state']) && $_POST['state'] === 'TAS') ? 'selected' : '' ?>>TAS</option>
+                            </select>
+                        </td>
+                        <td><input type="text" id="postcode" name="postcode" placeholder="Postcode" value="<?= isset($_POST['postcode']) ? htmlspecialchars($_POST['postcode']) : '' ?>" required></td>
+                    </tr>
+                    <tr>
+                        <td>Email <span style="color:red">*</span></td>
+                        <td><input type="email" id="email" name="email" value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>" required></td>
+                    </tr>
+                    <tr>
+                        <td>Phone Number <span style="color:red">*</span></td>
+                        <td><input type="tel" id="phone" name="phone" value="<?= isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : '' ?>" required></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <a href="confirmation.php">
+                            <input type="submit" value="Submit">
+                        </a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+    
 
         </main>
         
@@ -221,3 +213,7 @@ foreach ($_SESSION['cart'] as $item) {
         <script src="checkout.js"></script>
     </body>
 </html>
+<?php
+header("Location: confirmation.php");
+exit();
+?>

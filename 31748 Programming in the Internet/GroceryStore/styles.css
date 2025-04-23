@@ -583,3 +583,24 @@ footer .material-icons {
 .form-group-row .form-group {
     flex: 1;
 }
+
+.error-messages {
+    background-color: #ffebee;
+    border-left: 4px solid #f44336;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.error-messages h3 {
+    color: #f44336;
+    margin-top: 0;
+}
+
+.error-messages ul {
+    margin-bottom: 0;
+    padding-left: 20px;
+}
+
+.error-messages li {
+    color: #f44336;
+}

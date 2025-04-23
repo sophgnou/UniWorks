@@ -217,7 +217,7 @@ mysqli_close($connection);
             <div class="display">
             <?php foreach ($products as $product): ?>
                 <div class="item">
-                    <img src="images/product_<?= $product['product_id'] ?>.jpg" height="125" alt="<?= htmlspecialchars($product['product_name']) ?>">
+                    <img src="images/product_<?= $product['product_id'] ?>.png" height="125" alt="<?= htmlspecialchars($product['product_name']) ?>">
                     <div class="item-content">
                         <h3><?= htmlspecialchars($product['product_name']) ?></h3>
                         <p><?= htmlspecialchars($product['unit_quantity']) ?></p>
