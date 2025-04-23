@@ -102,6 +102,7 @@ body {
 }
 .dropbtn.active {
     color: greenyellow;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .dropcontent {
@@ -109,30 +110,17 @@ body {
     top: 70px;
     left: 0;
     display: none;
-    position: fixed;
+    position: absolute;
     background-color: lightblue;
     width: 100vw;
-    min-width: 100%;
+    min-width: 200px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1000;
 }
 .dropdown:hover .dropcontent, .dropcontent.show {
     display: block !important;
 }
-/*dropdown links*/
-.dropcontent a {
-    color:black;
-    text-decoration: none;
-    padding: 12px 16px;
-    display: inline-block;
-    text-align: center;
-    transition: all 0.2s
-}
 
-.dropcontent a:hover{
-    color: teal;
-    background-color: lightskyblue;
-}
 /* sub-menu styles */
 .submenu {
     position: relative;
@@ -150,11 +138,40 @@ body {
     background-color: lightblue;
     min-width: 200px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1002;
+    z-index: 1001;
 }
 .submenu:hover .submenu-content {
     display: block;
 }
+
+/*dropdown links*/
+.dropcontent a {
+    color:black;
+    text-decoration: none;
+    padding: 12px 16px;
+    display: inline-block;
+    text-align: center;
+    transition: all 0.2s
+}
+.dropcontent a:hover{
+    color: teal;
+    background-color: lightskyblue;
+}
+
+.dropcontent, .submenu-content {
+    transition: all 0.3s ease;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.dropcontent.show, .submenu-content.show {
+    opacity: 1;
+    height: auto;
+}
+
+
+
 /* Mobile Responsiveness 
 @media (max-width: 768px) {
     .navbar {

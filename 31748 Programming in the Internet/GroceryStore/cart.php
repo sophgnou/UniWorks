@@ -72,7 +72,7 @@ $connection = mysqli_connect('localhost', 'root', '', 'assignment1');
                             <a href="#">Home Supplies</a>
                             <a href="#">Pet Items</a>
                         </div>
-                        </div>
+                    </div>
                 </div>
             </nav>
         </header>

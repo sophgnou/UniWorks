@@ -137,28 +137,38 @@ mysqli_close($connection);
                 <a href="index.php" class="home active"><i class="material-icons">home</i> Home</a>
                 <a href="about.html" class="about"><i class="material-icons">info</i> About</a>  
                 <div class="dropdown">
-                    <button data-toggle-nav class="dropbtn" onClick="toggleNav()"><i class="material-icons">arrow_drop_down_circle</i> Food & Groceries</button>
-                <div class="dropcontent" id="contentDown">
-                    <div class="submenu">
-                        <a href="#">Frozen</a>
-
-                        <a href="">Fresh</a>
-                        <div class="submenu-cont">
-                            <a href="#">Meat</a>
-                            <a herf="#">Fruits</a>
-                            <a href="#">Dairy</a>
+                    <button data-toggle-nav class="dropbtn" onClick="toggleNav()" aria-expanded="false" aria-controls="contentDown"><i class="material-icons">arrow_drop_down_circle</i> Food & Groceries</button>
+                    <div class="dropcontent" id="contentDown">
+                        <div class="submenu">
+                            <a href="#">Frozen</a>
                         </div>
 
-                        <a href="#">Beverages</a>
-                        <a href="">Snacks</a>
+                        <div class="submenu">
+                            <a href="#">Fresh</a>
+                            <div class="submenu-cont">
+                                <a href="#">Meat</a>
+                                <a herf="#">Fruits</a>
+                                <a href="#">Dairy</a>
+                            </div>
+                        </div>
 
-                        <a href="">Household</a>
-                        <div class="submenu-cont">
-                            <a href="#">Health Care</a>
-                            <a href="#">Home Supplies</a>
-                            <a href="#">Pet Items</a>
+
+                        <div class="submenu">
+                            <a href="#">Beverages</a>
                         </div>
+                        <div class="submenu">
+                            <a href="#">Snacks</a>
                         </div>
+
+                        <div class="submenu">
+                            <a href="#">Household</a>
+                            <div class="submenu-cont">
+                                <a href="#">Health Care</a>
+                                <a href="#">Home Supplies</a>
+                                <a href="#">Pet Items</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </nav>
             <div class="search-cont">
