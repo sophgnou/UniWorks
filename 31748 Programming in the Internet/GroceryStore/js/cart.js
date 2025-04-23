@@ -1,3 +1,5 @@
+//cart features
+
 document.querySelectorAll('.add-to-cart').forEach(button => {
     button.addEventListener('click', function() {
         const productId = this.getAttribute('data-product-id');
