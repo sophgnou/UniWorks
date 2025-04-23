@@ -18,6 +18,18 @@ document.addEventListener('click', function(event) {
         dropBtn.classList.remove('active');
     }
 }); */
+document.addEventListener('DOMContentLoaded', function() {
+    // Highlight active category
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+    
+    if (category) {
+        const categoryLinks = document.querySelectorAll(`.dropcontent a[href*="${category}"]`);
+        categoryLinks.forEach(link => {
+            link.classList.add('active-category');
+        });
+    }
+});
 
 // Toggle navigation dropdowns
 document.addEventListener('DOMContentLoaded', function() {

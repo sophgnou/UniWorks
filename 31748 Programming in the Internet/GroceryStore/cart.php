@@ -45,36 +45,41 @@ $connection = mysqli_connect('localhost', 'root', '', 'assignment1');
     <body>
         <!-- somehow putting the logo and aligning it to the nav bar is really hard, so this is the method that works for me -->
          <!-- how tf do I do the toggle function -->
-        <header>
-            <nav class="navbar">
-                <a href="index.php" class="logo"><i class="material-icons logo">storefront</i></a>
-                <a href="index.php" class="home active"><i class="material-icons">home</i> Home</a>
-                <a href="about.html" class="about"><i class="material-icons">info</i> About</a>  
-                <div class="dropdown">
-                    <button data-toggle-nav class="dropbtn" onClick="toggleNav()"><i class="material-icons">arrow_drop_down_circle</i> Food & Groceries</button>
+         <header>
+        <nav class="navbar">
+            <a href="index.php" class="logo"><i class="material-icons logo">storefront</i></a>
+            <a href="index.php" class="home active"><i class="material-icons">home</i> Home</a>
+            <a href="about.html" class="about"><i class="material-icons">info</i> About</a>  
+            <div class="dropdown">
+                <button class="dropbtn" onClick="toggleNav()" aria-expanded="false" aria-controls="contentDown">
+                    <i class="material-icons">arrow_drop_down_circle</i> Categories
+                </button>
                 <div class="dropcontent" id="contentDown">
+                    <a href="index.php?category=frozen">Frozen</a>
+                    
                     <div class="submenu">
-                        <a href="#">Frozen</a>
-
-                        <a href="">Fresh</a>
+                        <a href="#">Fresh ▸</a>
                         <div class="submenu-cont">
-                            <a href="#">Meat</a>
-                            <a herf="#">Fruits</a>
-                            <a href="#">Dairy</a>
+                            <a href="index.php?category=meat">Meat</a>
+                            <a href="index.php?category=fruits">Fruits</a>
+                            <a href="index.php?category=dairy">Dairy</a>
                         </div>
-
-                        <a href="#">Beverages</a>
-                        <a href="">Snacks</a>
-
-                        <a href="">Household</a>
+                    </div>
+                    
+                    <a href="index.php?category=beverages">Beverages</a>
+                    <a href="index.php?category=snacks">Snacks</a>
+                    
+                    <div class="submenu">
+                        <a href="#">Household ▸</a>
                         <div class="submenu-cont">
-                            <a href="#">Health Care</a>
-                            <a href="#">Home Supplies</a>
-                            <a href="#">Pet Items</a>
+                            <a href="index.php?category=health">Health Care</a>
+                            <a href="index.php?category=home">Home Supplies</a>
+                            <a href="index.php?category=pet">Pet Items</a>
                         </div>
                     </div>
                 </div>
-            </nav>
+            </div>
+        </nav>
         </header>
 
         
@@ -131,7 +136,9 @@ $connection = mysqli_connect('localhost', 'root', '', 'assignment1');
                 </table>
                 <div class="cart-actions">
                     <button type="submit" name="update_cart" class="update-btn">Update Cart</button>
-                    <a href="checkout.php" class="checkout-btn">Proceed to Checkout</a>
+                    <?php if (!empty($_SESSION['cart'])): ?>
+                        <a href="checkout.php" class="checkout-btn">Proceed to Checkout</a>
+                    <?php endif; ?>
                 </div>
             </form>
         <?php endif; ?>
