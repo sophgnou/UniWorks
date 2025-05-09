@@ -55,7 +55,7 @@ if (!$connection) {
 // Initialize variables
 $products = [];
 $searchQuery = "";
-
+$categoryFilter = "";
 /*
 // Fetch products
 $query = "SELECT * FROM products";
@@ -66,6 +66,35 @@ if (!$result) {
     die("Query failed: " . mysqli_error($connection));
 } 
     */
+// Define category mappings
+// Define category mappings
+$categoryMap = [
+    'frozen' => "product_name IN ('Fish Fingers', 'Hamburger Patties', 'Shelled Prawns', 'Tub Ice Cream')",
+    'meat' => "product_name = 'T Bone Steak'",
+    'fruits' => "product_name IN ('Navel Oranges', 'Bananas', 'Peaches', 'Grapes', 'Apples')",
+    'dairy' => "product_name = 'Cheddar Cheese'",
+    'beverages' => "product_name IN ('Earl Grey Tea Bags', 'Instant Coffee')",
+    'snacks' => "product_name = 'Chocolate Bar'",
+    'health' => "product_name IN ('Panadol', 'Bath Soap')",
+    'home' => "product_name IN ('Garbage Bags Small', 'Garbage Bags Large', 'Washing Powder', 'Laundry Bleach')",
+    'pet' => "product_name IN ('Dry Dog Food', 'Bird Food', 'Cat Food', 'Fish Food')"
+];
+
+// Initialize category filter
+$categoryFilter = "";
+
+// Check if category filter is set
+if (isset($_GET['category']) && array_key_exists($_GET['category'], $categoryMap)) {
+    $category = $_GET['category'];
+    $categoryFilter = " WHERE " . $categoryMap[$category];
+    $searchQuery = " - Category: " . ucfirst($category);
+}
+// Check if category filter is set
+if (isset($_GET['category']) && array_key_exists($_GET['category'], $categoryMap)) {
+    $category = $_GET['category'];
+    $categoryFilter = " WHERE " . $categoryMap[$category];
+    $searchQuery = " - Category: " . ucfirst($category);
+}
 
 // Check if search form was submitted
 if (isset($_GET['search']) && !empty($_GET['search'])) {
@@ -73,15 +102,16 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
     $query = "SELECT * FROM products WHERE product_name LIKE '%$searchTerm%'";
     $searchQuery = " - Search results for: " . htmlspecialchars($_GET['search']);
 } else {
-    // Default query (all products)
+    // Default query (all products or filtered by category)
     $query = "SELECT p.* FROM products p
               INNER JOIN (
                   SELECT product_name, MIN(product_id) as min_id
                   FROM products
                   GROUP BY product_name, unit_quantity
               ) as unique_products
-              ON p.product_id = unique_products.min_id
-              ORDER BY p.product_name";
+              ON p.product_id = unique_products.min_id" 
+              . $categoryFilter . 
+              " ORDER BY p.product_name";
 }
 
 // Execute query
@@ -90,12 +120,10 @@ $result = mysqli_query($connection, $query);
 if (!$result) {
     die("Query failed: " . mysqli_error($connection));
 }
-
 // Fetch all results into array
 while ($row = mysqli_fetch_assoc($result)) {
     $products[] = $row;
 }
-
 /*
 $keywords = $_REQUEST['search'];
 $query_string = "select * FROM products WHERE product_name LIKE '%$keywords%'";
@@ -132,35 +160,40 @@ mysqli_close($connection);
         <!-- somehow putting the logo and aligning it to the nav bar is really hard, so this is the method that works for me -->
          <!-- how tf do I do the toggle function -->
         <header>
-            <nav class="navbar">
-                <a href="index.php" class="logo"><i class="material-icons logo">storefront</i></a>
-                <a href="index.php" class="home active"><i class="material-icons">home</i> Home</a>
-                <a href="about.html" class="about"><i class="material-icons">info</i> About</a>  
-                <div class="dropdown">
-                    <button data-toggle-nav class="dropbtn" onClick="toggleNav()"><i class="material-icons">arrow_drop_down_circle</i> Food & Groceries</button>
+        <nav class="navbar">
+            <a href="index.php" class="logo"><i class="material-icons logo">storefront</i></a>
+            <a href="index.php" class="home active"><i class="material-icons">home</i> Home</a>
+            <a href="about.html" class="about"><i class="material-icons">info</i> About</a>  
+            <div class="dropdown">
+                <button class="dropbtn" onClick="toggleNav()" aria-expanded="false" aria-controls="contentDown">
+                    <i class="material-icons">arrow_drop_down_circle</i> Categories
+                </button>
                 <div class="dropcontent" id="contentDown">
+                    <a href="index.php?category=frozen">Frozen</a>
+                    
                     <div class="submenu">
-                        <a href="#">Frozen</a>
-
-                        <a href="">Fresh</a>
+                        <a href="#">Fresh ▸</a>
                         <div class="submenu-cont">
-                            <a href="#">Meat</a>
-                            <a herf="#">Fruits</a>
-                            <a href="#">Dairy</a>
+                            <a href="index.php?category=meat">Meat</a>
+                            <a href="index.php?category=fruits">Fruits</a>
+                            <a href="index.php?category=dairy">Dairy</a>
                         </div>
-
-                        <a href="#">Beverages</a>
-                        <a href="">Snacks</a>
-
-                        <a href="">Household</a>
+                    </div>
+                    
+                    <a href="index.php?category=beverages">Beverages</a>
+                    <a href="index.php?category=snacks">Snacks</a>
+                    
+                    <div class="submenu">
+                        <a href="#">Household ▸</a>
                         <div class="submenu-cont">
-                            <a href="#">Health Care</a>
-                            <a href="#">Home Supplies</a>
-                            <a href="#">Pet Items</a>
+                            <a href="index.php?category=health">Health Care</a>
+                            <a href="index.php?category=home">Home Supplies</a>
+                            <a href="index.php?category=pet">Pet Items</a>
                         </div>
-                        </div>
+                    </div>
                 </div>
-            </nav>
+            </div>
+        </nav>
             <div class="search-cont">
                 <form class="search-bar" action="index.php" method="get">
                     <input type="text" placeholder="Search products..." name="search" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
@@ -184,7 +217,7 @@ mysqli_close($connection);
             <div class="display">
             <?php foreach ($products as $product): ?>
                 <div class="item">
-                    <img src="images/product_<?= $product['product_id'] ?>.jpg" height="125" alt="<?= htmlspecialchars($product['product_name']) ?>">
+                    <img src="images/product_<?= $product['product_id'] ?>.png" height="125" alt="<?= htmlspecialchars($product['product_name']) ?>">
                     <div class="item-content">
                         <h3><?= htmlspecialchars($product['product_name']) ?></h3>
                         <p><?= htmlspecialchars($product['unit_quantity']) ?></p>
