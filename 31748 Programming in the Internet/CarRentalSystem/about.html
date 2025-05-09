@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Car Rental</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="car rental" content="assessment 1" />
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar">
+                <a href="index.php" class="logo"><i class="material-icons logo">storefront</i></a>
+                <a href="index.html" class="home active"><i class="material-icons">home</i> Home</a>
+                <a href="about.html" class="about"><i class="material-icons">info</i> About</a>  
+                <a href="cars.html" class="cars"><i class="material-icons">directions_car</i> Cars</a>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <a href="cart.html">
+                <button id="cart-button"><i class="material-icons">shopping_cart</i></button>
+            </a>
+            <div class="page-text"></div>
+            <h1>About</h1>
+            <p>This is Assignment 2 for an Online Car Rental System using AJAX and JSON for the subject, 31748 Programming on the Internet by Sophie Gnoukhanthone.</p>
+        
+        </div>
+        </main>
+
+        <footer>
+            <!-- contact details & uni student deetails -->
+            <h2>Contact</h2>
+            <ul>
+                <li>123 Fake Street, Suburb, State, Country 1234</li>
+                <li>XXXX-XXX-XXX</li>
+                <li><a href="" id="linkedin">Linkedin</a></li>
+            </ul>
+            <p id="copyright"><i class="material-icons link">copyright</i> 2025 Sophie Gnoukhanthone 14241994</p>
+        </footer>
+
+        <script>
+            function toggleNav() {
+            const dropContent = document.getElementById('contentDown');
+            const dropBtn = document.querySelector('[data-toggle-nav]');
+            
+            dropContent.classList.toggle('show');
+            dropBtn.classList.toggle('active');
+            }
+    
+            // Close when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.dropdown')) {
+                    const dropContent = document.getElementById('contentDown');
+                    const dropBtn = document.querySelector('[data-toggle-nav]');
+                    
+                    dropContent.classList.remove('show');
+                    dropBtn.classList.remove('active');
+                }
+            });
+            </script>
+    </body>
+</html>

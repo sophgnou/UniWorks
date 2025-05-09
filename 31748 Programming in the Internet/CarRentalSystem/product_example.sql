@@ -16,23 +16,23 @@ CREATE TABLE `products` (
 -- ----------------------------
 -- Records of products
 -- ----------------------------
-INSERT INTO `products` VALUES (1000, 'Fish Fingers', 2.55, '500 gram', 1500);
-INSERT INTO `products` VALUES (1001, 'Fish Fingers', 5.00, '1000 gram', 750);
-INSERT INTO `products` VALUES (1002, 'Hamburger Patties', 2.35, 'Pack 10', 1200);
-INSERT INTO `products` VALUES (1003, 'Shelled Prawns', 6.90, '250 gram', 300);
-INSERT INTO `products` VALUES (1004, 'Tub Ice Cream', 1.80, 'I Litre', 800);
-INSERT INTO `products` VALUES (1005, 'Tub Ice Cream', 3.40, '2 Litre', 1200);
-INSERT INTO `products` VALUES (2000, 'Panadol', 3.00, 'Pack 24', 2000);
-INSERT INTO `products` VALUES (2001, 'Panadol', 5.50, 'Bottle 50', 1000);
-INSERT INTO `products` VALUES (2002, 'Bath Soap', 2.60, 'Pack 6', 500);
-INSERT INTO `products` VALUES (2003, 'Garbage Bags Small', 1.50, 'Pack 10', 500);
-INSERT INTO `products` VALUES (2004, 'Garbage Bags Large', 5.00, 'Pack 50', 300);
-INSERT INTO `products` VALUES (2005, 'Washing Powder', 4.00, '1000 gram', 800);
-INSERT INTO `products` VALUES (3000, 'Cheddar Cheese', 8.00, '500 gram', 1000);
-INSERT INTO `products` VALUES (3001, 'Cheddar Cheese', 15.00, '1000 gram', 1000);
-INSERT INTO `products` VALUES (3002, 'T Bone Steak', 7.00, '1000 gram', 200);
-INSERT INTO `products` VALUES (3003, 'Navel Oranges', 3.99, 'Bag 20', 200);
-INSERT INTO `products` VALUES (3004, 'Bananas', 1.49, 'Kilo', 400);
+INSERT INTO `products` VALUES (1000, 'Toyota Corolla', 2.55, '500 gram', 1500);
+INSERT INTO `products` VALUES (1001, 'Toyota Yaris', 5.00, '1000 gram', 750);
+INSERT INTO `products` VALUES (1002, 'Honda Jazz', 2.35, 'Pack 10', 1200);
+INSERT INTO `products` VALUES (1003, 'Suzuki Swift', 6.90, '250 gram', 300);
+INSERT INTO `products` VALUES (1004, 'Toyota Camry', 1.80, 'I Litre', 800);
+INSERT INTO `products` VALUES (1005, 'Toyota Rav4', 3.40, '2 Litre', 1200);
+INSERT INTO `products` VALUES (2000, 'Mitsubishi Outlander', 3.00, 'Pack 24', 2000);
+INSERT INTO `products` VALUES (2001, 'Subaru Outback', 5.50, 'Bottle 50', 1000);
+INSERT INTO `products` VALUES (2002, 'Hyandai Elantra', 2.60, 'Pack 6', 500);
+INSERT INTO `products` VALUES (2003, 'Kia Sportage', 1.50, 'Pack 10', 500);
+INSERT INTO `products` VALUES (2004, 'Nissan Quashqai', 5.00, 'Pack 50', 300);
+INSERT INTO `products` VALUES (2005, 'Mitsubishi Eclipse', 4.00, '1000 gram', 800);
+INSERT INTO `products` VALUES (3000, 'Kia Carnival', 8.00, '500 gram', 1000);
+INSERT INTO `products` VALUES (3001, 'Toyota Hiace', 15.00, '1000 gram', 1000);
+INSERT INTO `products` VALUES (3002, 'BYD Atto 3', 7.00, '1000 gram', 200);
+INSERT INTO `products` VALUES (3003, 'BYD Seal', 3.99, 'Bag 20', 200);
+INSERT INTO `products` VALUES (3004, 'Kia EV6', 1.49, 'Kilo', 400);
 INSERT INTO `products` VALUES (3005, 'Peaches', 2.99, 'Kilo', 500);
 INSERT INTO `products` VALUES (3006, 'Grapes', 3.50, 'Kilo', 200);
 INSERT INTO `products` VALUES (3007, 'Apples', 1.99, 'Kilo', 500);
