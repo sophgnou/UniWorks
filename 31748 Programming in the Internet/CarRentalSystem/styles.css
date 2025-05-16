@@ -5,7 +5,7 @@
 
 /* Nav */
 .navbar {
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0,0,0,0.75);
     position: fixed;
     top: 0;
     left: 0;
@@ -13,13 +13,24 @@
     text-align: right;
     padding: 5px 16px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
+    justify-content: space-between;
     min-height: 70px;
     z-index: 1000;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
+.left-nav{
+    display: flex;
+    width: 20%;
+}
+.right-nav{
+    width: 80%;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 30px;
+}
+
 .navbar .logo {
     font-size: 50px;
     color: antiquewhite;
@@ -29,7 +40,6 @@
 .navbar .logo:hover {
     transform: scale(1.1);
 }
-
 .navbar a {
     text-decoration: none;
     padding: 10px 15px;
@@ -39,7 +49,7 @@
 }
 
 .navbar a:hover{
-    color: greenyellow;
+    color: #77BED2;
 }
 
 /*Body*/
@@ -47,6 +57,9 @@ body {
     margin: 0;
     overflow-x: hidden;
     max-width: 100vw;
+    min-height: 100vh;
+    padding-bottom: 200px;
+    
 }
 #home-img{
     top: 0;
@@ -58,8 +71,15 @@ body {
 /*Main*/
 .page-text {
     padding: 10px;
+    margin-top: auto;
 }
-
+.page-text h1{
+    color: #464646;
+}
+.page-about {
+    padding: 20px;
+    height: 100px;
+}
 /* Search Bat */
 /* Floating Search Bar*/
 .search-cont {
@@ -86,7 +106,7 @@ body {
     outline: none;
 }
 .search-bar button {
-    background-color: lightseagreen;
+    background-color: #FF6600 ;
     border: none;
     color: white;
     padding: 0 15px;
@@ -94,7 +114,7 @@ body {
     transition: background 0.3s;
 }
 .search-bar button:hover {
-    background: #20B2AA;
+    background: #FF9900 ;
 }
 
 /* Cart Button */
@@ -111,7 +131,7 @@ body {
     border: none;
     padding: 0;
     /*appearance*/
-    background-color: lightseagreen;
+    background-color: #FF6600 ;
     color: white;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
@@ -124,7 +144,7 @@ body {
     font-size: 28px; /* Slightly larger icon */
 }
 #cart-button:hover {
-    background-color: #20B2aa;
+    background-color: #FF9900;
     transform: scale(1.1);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
@@ -188,7 +208,7 @@ span {
 .add-to-cart {
     border-radius: 25px;
     border: none;
-    background-color: #20B2aa;
+    background-color: #FF9900  ;
     text-align: center;
     padding: 5px 12px;
     font-size: 14px;
@@ -217,7 +237,7 @@ span {
 }
 
 .add-to-cart:hover {
-    background-color: teal;
+    background-color: #f3c200;
     transform: scale(1.02);
 }
 
@@ -227,8 +247,9 @@ footer {
     margin-top: 50px;
     left: 0;
     border: none;
+    height: 200px;
     width: 100%;
-    background-color: lightseagreen;
+    background-color: #464646;
     position: absolute;
     text-align: center;
     padding: 5px 16px;
@@ -240,7 +261,7 @@ footer {
     color: whitesmoke;
 }
 footer h2 {
-    color: whitesmoke;
+    color: #f3c200 ;
 }
 footer ul {
     color: whitesmoke;
@@ -257,7 +278,7 @@ footer a {
 }
 
 footer a:hover {
-    color: greenyellow;
+    color: #77BED2;
 }
 
 footer .material-icons {
