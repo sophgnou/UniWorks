@@ -66,7 +66,6 @@ body {
     display: inline-block;
 }
 #home-img{
-    top: 0;
     width: 100%;
     height: 500px;
     object-fit: cover;
@@ -86,10 +85,41 @@ body {
     z-index: 501;
     color: antiquewhite;
 }
+
 #rentgo{
     padding: 10px;
-    background-color: #f44336;
+    background-color: #FF6600;
     color: antiquewhite;
+    border-radius: 25px;
+    border: none;
+    text-align: center;
+    padding: 15px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    align-items: right;
+}
+#rentgo p {
+    color: whitesmoke;
+    font-weight: bold;
+    margin: 5px;
+    padding-left: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#rentgo .material-icons {
+    color: whitesmoke;
+    font-size: 16px;
+}
+
+#rentgo:hover {
+    background-color: #f3c200;
+    transform: scale(1.02);
 }
 
 /*Main*/
@@ -143,9 +173,26 @@ body {
 
 /* Category */
 .car-cat{
-
+    margin-left: 30px;
+    margin-bottom: 20px;
+    padding: 10px;
+    text-align: left;
 }
-
+.category{
+    text-decoration: none;
+    padding: 15px 20px;
+    font-size: 16px;
+    text-align: center;
+    background-color: white;
+    border-radius: 25px;
+    border: 3px solid #f44336;
+    color: #f44336;
+}
+.category:hover{
+    background-color: #f44336;
+    color: antiquewhite;
+    transition: all 0.3s ease;
+}
 
 /* Cart Button */
 #cart-button {
