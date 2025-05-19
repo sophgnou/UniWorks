@@ -48,8 +48,20 @@
                     </form>
             </div>
             <div class="car-cat">
-                <a href="#" class="category"><i class="material-icons">arrow_drop_down</i> Car Type</a>
-                <a href="#" class="category"><i class="material-icons">arrow_drop_down</i> Brand</a>
+                <div class="dropdown">
+                <a href="#" class="category drop-trigger" data-category="car-type"><i class="material-icons">arrow_drop_down</i> Car Type</a>
+                    <div class="drop-content" id="car-type-dropdown">
+                        <a href="#">SUV</a>
+                        <div class="load-spin"></div>
+                    </div>
+                </div>
+                <div class="dropdown">
+                <a href="#" class="category drop-trigger" data-category="Brand"><i class="material-icons">arrow_drop_down</i> Brand</a>
+                    <div class="drop-content" id="brand-dropdown">
+                        <a href="#">Toyota</a>
+                        <div class="load-spin"></div>
+                    </div>
+                </div>
             </div>
             </div>
             <a href="cart.html">
@@ -173,7 +185,7 @@
             <p id="copyright"><i class="material-icons link">copyright</i> 2025 Sophie Gnoukhanthone 14241994</p>
         `
         </footer>
-        <script src="js/togglenav.js"></script> 
+        <script src="js/script.js"></script> 
         <!--<script type="text/javascript">
         function toggleNav() {
         const dropContent = document.getElementById('contentDown');
