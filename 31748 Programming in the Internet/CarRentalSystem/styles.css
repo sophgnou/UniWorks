@@ -61,6 +61,10 @@ body {
     padding-bottom: 200px;
     
 }
+a {
+    text-decoration: none;
+}
+
 .landing{
     position: relative;
     display: inline-block;
