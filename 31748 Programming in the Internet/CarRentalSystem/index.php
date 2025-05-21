@@ -7,7 +7,61 @@ if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
+//loading JSON data
+$jsonData = file_get_contents('data/cars.json');
+$data = json_decode($jsonData, true);
+$cars = $data['cars'];
+
 // Handle add to cart requests
+IF (ISSET($_POST['add_to_cart'])){
+    $carId = (int)$_POST['car_id'];
+    $rentalDays = isset($_POST['rental_days']) ? (int)$_POST['rental_days'] : 1;
+
+    //find car in JSON data
+    $selectedCar = null;
+    foreach($cars as $car) {
+        if($car['id'] === $carId){
+            $selectedCar = $car;
+            break;
+        }
+    }
+    if($selectedCar && $selectedCar['avaliable']){
+        if(isset($_SESSION['cart'][$carId])){
+            $_SESSION['cart'][$carId]['days'] += $rentalDays;
+        } else{
+            $_SESSION['cart'][$carId] = [
+                'model' => $selectedCar['model'],
+                'brand' => $selectedCar['brand'],
+                'pricePerDay' => $selectedCar['pricePerDay'],
+                'days' => $rentalDays,
+                'image' => $selectedCar['image']
+            ];
+        }
+    } else{
+        $_SESSION['error'] = "This car is not available to rent.";
+    }
+    header("Location: ".$_SERVER['PHP_SELF']);
+    exit();
+}
+
+// category filter
+$filteredCars = $cars;
+if (isset($_GET['category'])) {
+    $category = $_GET['category'];
+    $filteredCars = array_filter($cars, function($car) use ($category) {
+        return strtolower($car['carType']) === strtolower($category);
+    });
+}
+// Search functionality
+if (isset($_GET['search']) && !empty($_GET['search'])) {
+    $searchTerm = strtolower($_GET['search']);
+    $filteredCars = array_filter($filteredCars, function($car) use ($searchTerm) {
+        return strpos(strtolower($car['brand']), $searchTerm) !== false ||
+               strpos(strtolower($car['model']), $searchTerm) !== false;
+    });
+}
+
+/* FROM FIRST WEBSITE
 if (isset($_POST['add_to_cart'])) {
     $product_id = $_POST['product_id'];
     $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
@@ -42,9 +96,7 @@ if (isset($_POST['add_to_cart'])) {
     // Redirect to prevent form resubmission
     header("Location: ".$_SERVER['PHP_SELF']);
     exit();
-}
-
-
+} 
 // Database connection
 $connection = mysqli_connect('localhost', 'root', '', 'assignment1');
 
@@ -56,90 +108,11 @@ if (!$connection) {
 $products = [];
 $searchQuery = "";
 $categoryFilter = "";
-/*
-// Fetch products
-$query = "SELECT * FROM products";
-$result = mysqli_query($connection, $query);
 
-// Check if query succeeded
-if (!$result) {
-    die("Query failed: " . mysqli_error($connection));
-} 
-    */
-// Define category mappings
-// Define category mappings
-$categoryMap = [
-    'frozen' => "product_name IN ('Fish Fingers', 'Hamburger Patties', 'Shelled Prawns', 'Tub Ice Cream')",
-    'meat' => "product_name = 'T Bone Steak'",
-    'fruits' => "product_name IN ('Navel Oranges', 'Bananas', 'Peaches', 'Grapes', 'Apples')",
-    'dairy' => "product_name = 'Cheddar Cheese'",
-    'beverages' => "product_name IN ('Earl Grey Tea Bags', 'Instant Coffee')",
-    'snacks' => "product_name = 'Chocolate Bar'",
-    'health' => "product_name IN ('Panadol', 'Bath Soap')",
-    'home' => "product_name IN ('Garbage Bags Small', 'Garbage Bags Large', 'Washing Powder', 'Laundry Bleach')",
-    'pet' => "product_name IN ('Dry Dog Food', 'Bird Food', 'Cat Food', 'Fish Food')"
-];
+*/ 
 
-// Initialize category filter
-$categoryFilter = "";
 
-// Check if category filter is set
-if (isset($_GET['category']) && array_key_exists($_GET['category'], $categoryMap)) {
-    $category = $_GET['category'];
-    $categoryFilter = " WHERE " . $categoryMap[$category];
-    $searchQuery = " - Category: " . ucfirst($category);
-}
-// Check if category filter is set
-if (isset($_GET['category']) && array_key_exists($_GET['category'], $categoryMap)) {
-    $category = $_GET['category'];
-    $categoryFilter = " WHERE " . $categoryMap[$category];
-    $searchQuery = " - Category: " . ucfirst($category);
-}
 
-// Check if search form was submitted
-if (isset($_GET['search']) && !empty($_GET['search'])) {
-    $searchTerm = mysqli_real_escape_string($connection, $_GET['search']);
-    $query = "SELECT * FROM products WHERE product_name LIKE '%$searchTerm%'";
-    $searchQuery = " - Search results for: " . htmlspecialchars($_GET['search']);
-} else {
-    // Default query (all products or filtered by category)
-    $query = "SELECT p.* FROM products p
-              INNER JOIN (
-                  SELECT product_name, MIN(product_id) as min_id
-                  FROM products
-                  GROUP BY product_name, unit_quantity
-              ) as unique_products
-              ON p.product_id = unique_products.min_id" 
-              . $categoryFilter . 
-              " ORDER BY p.product_name";
-}
-
-// Execute query
-$result = mysqli_query($connection, $query);
-
-if (!$result) {
-    die("Query failed: " . mysqli_error($connection));
-}
-// Fetch all results into array
-while ($row = mysqli_fetch_assoc($result)) {
-    $products[] = $row;
-}
-/*
-$keywords = $_REQUEST['search'];
-$query_string = "select * FROM products WHERE product_name LIKE '%$keywords%'";
-$num_rows = mysqli_query( $connection, $query_string);
-
-if ($num_rows > 0) {
-    print "<table border='0'>";
-    while ($row = mysqli_fetch_assoc(result: $result)) {
-        echo "<tr>";
-        echo "<td>" . $row['product_name'] . "</td>";
-        echo "<td>" . $row['unit_price'] . "</td>";
-        echo "</tr>";
-    }
-    print "</table>";
-}
-*/
 // Close connection (optional, PHP will close it automatically when script ends)
 mysqli_close($connection);
 ?>

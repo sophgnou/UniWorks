@@ -17,7 +17,7 @@ foreach ($_SESSION['cart'] as $item) {
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Grocery Store</title>
+        <title>Checkout</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="grocerystore" content="assessment 1" />
@@ -33,41 +33,11 @@ foreach ($_SESSION['cart'] as $item) {
             <a href="index.php" class="logo"><i class="material-icons logo">storefront</i></a>
             <a href="index.php" class="home active"><i class="material-icons">home</i> Home</a>
             <a href="about.html" class="about"><i class="material-icons">info</i> About</a>  
-            <div class="dropdown">
-                <button class="dropbtn" onClick="toggleNav()" aria-expanded="false" aria-controls="contentDown">
-                    <i class="material-icons">arrow_drop_down_circle</i> Categories
-                </button>
-                <div class="dropcontent" id="contentDown">
-                    <a href="index.php?category=frozen">Frozen</a>
-                    
-                    <div class="submenu">
-                        <a href="#">Fresh ▸</a>
-                        <div class="submenu-cont">
-                            <a href="index.php?category=meat">Meat</a>
-                            <a href="index.php?category=fruits">Fruits</a>
-                            <a href="index.php?category=dairy">Dairy</a>
-                        </div>
-                    </div>
-                    
-                    <a href="index.php?category=beverages">Beverages</a>
-                    <a href="index.php?category=snacks">Snacks</a>
-                    
-                    <div class="submenu">
-                        <a href="#">Household ▸</a>
-                        <div class="submenu-cont">
-                            <a href="index.php?category=health">Health Care</a>
-                            <a href="index.php?category=home">Home Supplies</a>
-                            <a href="index.php?category=pet">Pet Items</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
         </header>
 
         <main>
-            <div class="order-summary">
-                <h2>Order Summary</h2>
+            <div class="checkout">
+                <h2>Checkout</h2>
                 <table class="checkout-table">
                     <thead>
                         <tr>

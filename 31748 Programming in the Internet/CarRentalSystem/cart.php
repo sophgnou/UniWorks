@@ -1,6 +1,14 @@
 <?php
 session_start();
 
+if (empty($_SESSION['cart'])) {
+    header('Location: index.php');
+    exit;
+}
+
+$totalCost = 0;
+
+/*
 // Handle remove from cart requests
 if (isset($_GET['remove'])) {
     $product_id = $_GET['remove'];
@@ -26,18 +34,16 @@ if (isset($_POST['update_cart'])) {
 }
 
 // Database connection for stock validation
-$connection = mysqli_connect('localhost', 'root', '', 'assignment1');
+$connection = mysqli_connect('localhost', 'root', '', 'assignment1'); */
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Grocery Store</title>
+        <title>Cart</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="grocerystore" content="assessment 1" />
+        <meta name="carrental" content="assessment 3" />
         <link rel="stylesheet" href="styles.css" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     </head>
@@ -50,98 +56,36 @@ $connection = mysqli_connect('localhost', 'root', '', 'assignment1');
             <a href="index.php" class="logo"><i class="material-icons logo">storefront</i></a>
             <a href="index.php" class="home active"><i class="material-icons">home</i> Home</a>
             <a href="about.html" class="about"><i class="material-icons">info</i> About</a>  
-            <div class="dropdown">
-                <button class="dropbtn" onClick="toggleNav()" aria-expanded="false" aria-controls="contentDown">
-                    <i class="material-icons">arrow_drop_down_circle</i> Categories
-                </button>
-                <div class="dropcontent" id="contentDown">
-                    <a href="index.php?category=frozen">Frozen</a>
-                    
-                    <div class="submenu">
-                        <a href="#">Fresh ▸</a>
-                        <div class="submenu-cont">
-                            <a href="index.php?category=meat">Meat</a>
-                            <a href="index.php?category=fruits">Fruits</a>
-                            <a href="index.php?category=dairy">Dairy</a>
-                        </div>
-                    </div>
-                    
-                    <a href="index.php?category=beverages">Beverages</a>
-                    <a href="index.php?category=snacks">Snacks</a>
-                    
-                    <div class="submenu">
-                        <a href="#">Household ▸</a>
-                        <div class="submenu-cont">
-                            <a href="index.php?category=health">Health Care</a>
-                            <a href="index.php?category=home">Home Supplies</a>
-                            <a href="index.php?category=pet">Pet Items</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </nav>
         </header>
 
         
     <main>
-        <h1>Your Shopping Cart</h1>
+        <h1>Rental Cart</h1>
         
-        <?php if (empty($_SESSION['cart'])): ?>
-            <p>Your cart is empty.</p>
-        <?php else: ?>
-            <form method="post" action="cart.php">
-                <table class="cart-table">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php 
-                        $total = 0;
-                        foreach ($_SESSION['cart'] as $product_id => $item): 
-                            // Verify current stock
-                            $query = "SELECT in_stock FROM products WHERE product_id = $product_id";
-                            $result = mysqli_query($connection, $query);
-                            $current_stock = mysqli_fetch_assoc($result)['in_stock'];
-                            
-                            $subtotal = $item['price'] * $item['quantity'];
-                            $total += $subtotal;
-                        ?>
-                            <tr>
-                                <td><?= htmlspecialchars($item['name']) ?> (<?= $item['unit'] ?>)</td>
-                                <td>$<?= number_format($item['price'], 2) ?></td>
-                                <td>
-                                    <input type="number" name="quantities[<?= $product_id ?>]" 
-                                           value="<?= $item['quantity'] ?>" 
-                                           min="1" 
-                                           max="<?= min($item['max_stock'], $current_stock) ?>">
-                                </td>
-                                <td>$<?= number_format($subtotal, 2) ?></td>
-                                <td><a href="cart.php?remove=<?= $product_id ?>">Remove</a></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3">Total</td>
-                            <td>$<?= number_format($total, 2) ?></td>
-                            <td></td>
-                        </tr>
-                    </tfoot>
-                </table>
-                <div class="cart-actions">
-                    <button type="submit" name="update_cart" class="update-btn">Update Cart</button>
-                    <?php if (!empty($_SESSION['cart'])): ?>
-                        <a href="checkout.php" class="checkout-btn">Proceed to Checkout</a>
-                    <?php endif; ?>
+        <div class="cart-items">
+            <?php foreach ($_SESSION['cart'] as $id => $item): ?>
+                <div class="cart-item">
+                    <img src="<?= htmlspecialchars($item['image']) ?>" alt="<?= htmlspecialchars($item['brand'].' '.$item['model']) ?>">
+                    <div class="item-details">
+                        <h3><?= htmlspecialchars($item['brand'].' '.$item['model']) ?></h3>
+                        <p><?= $item['days'] ?> day rental</p>
+                        <p>Price: $<?= number_format($item['pricePerDay'], 2) ?>/day</p>
+                        <p>Subtotal: $<?= number_format($item['pricePerDay'] * $item['days'], 2) ?></p>
+                        <form method="post" action="remove_from_cart.php">
+                            <input type="hidden" name="car_id" value="<?= $id ?>">
+                            <button type="submit">Remove</button>
+                        </form>
+                    </div>
                 </div>
-            </form>
-        <?php endif; ?>
+                <?php $totalCost += $item['pricePerDay'] * $item['days']; ?>
+            <?php endforeach; ?>
+        </div>
+        
+        <div class="cart-total">
+            <h2>Total: $<?= number_format($totalCost, 2) ?></h2>
+            <a href="checkout.php" class="checkout-btn">Proceed to Checkout</a>
+        </div>
     </main>
 
 

@@ -38,6 +38,34 @@
       "pricePerDay": 120,
       "description": "A powerful and stylish coupe offering an exhilarating driving experience.",
       "vin": "1FA6P8TH6J5134567"
+    },
+    {
+      "id": 1,
+      "carType": "Sedan",
+      "brand": "Toyota",
+      "model": "Corolla",
+      "image": "images/corolla.jpg",
+      "year": 2014,
+      "mileage": "30,000 km",
+      "fuelType": "Gasoline",
+      "available": true,
+      "price": 50,
+      "description": "A reliable sedan",
+      "vin": "1HGBH41JXMN109186"
+    },
+    {
+      "id": 2,
+      "carType": "SUV",
+      "brand": "Honda",
+      "model": "CR-V",
+      "image": "images/crv.jpg",
+      "year": 2001,
+      "mileage": "45,000 km",
+      "fuelType": "Gasoline",
+      "available": false,
+      "price": 70,
+      "description": "Spacious SUV",
+      "vin": "2HGFC2F60KH123456"
     }
   ]
 }
