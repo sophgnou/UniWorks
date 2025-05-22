@@ -60,61 +60,6 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
                strpos(strtolower($car['model']), $searchTerm) !== false;
     });
 }
-
-/* FROM FIRST WEBSITE
-if (isset($_POST['add_to_cart'])) {
-    $product_id = $_POST['product_id'];
-    $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
-    
-    // Database connection
-    $connection = mysqli_connect('localhost', 'root', '', 'assignment1');
-    
-    // Check if product exists and has sufficient stock
-    $query = "SELECT * FROM products WHERE product_id = $product_id";
-    $result = mysqli_query($connection, $query);
-    
-    if ($result && $product = mysqli_fetch_assoc($result)) {
-        if ($product['in_stock'] >= $quantity) {
-            // Add to cart or update quantity
-            if (isset($_SESSION['cart'][$product_id])) {
-                $_SESSION['cart'][$product_id]['quantity'] += $quantity;
-            } else {
-                $_SESSION['cart'][$product_id] = [
-                    'name' => $product['product_name'],
-                    'price' => $product['unit_price'],
-                    'quantity' => $quantity,
-                    'unit' => $product['unit_quantity'],
-                    'max_stock' => $product['in_stock']
-                ];
-            }
-        } else {
-            $_SESSION['error'] = "Not enough stock available for {$product['product_name']}";
-        }
-    }
-    mysqli_close($connection);
-    
-    // Redirect to prevent form resubmission
-    header("Location: ".$_SERVER['PHP_SELF']);
-    exit();
-} 
-// Database connection
-$connection = mysqli_connect('localhost', 'root', '', 'assignment1');
-
-// Check connection
-if (!$connection) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-// Initialize variables
-$products = [];
-$searchQuery = "";
-$categoryFilter = "";
-
-*/ 
-
-
-
-// Close connection (optional, PHP will close it automatically when script ends)
-mysqli_close($connection);
 ?>
 
 <!DOCTYPE html>
@@ -131,14 +76,13 @@ mysqli_close($connection);
     <body> 
         <!-- somehow putting the logo and aligning it to the nav bar is really hard, so this is the method that works for me -->
         <!-- how tf do I do the toggle function -->
-        
         <header>
             <nav class="navbar">
                 <div class="left-nav">
                     <a href="index.php" class="logo"><i class="material-icons logo">directions_car</i></a>
                 </div>
                 <div class="right-nav">
-                    <a href="index.html" class="home active"><i class="material-icons">home</i> Home</a>
+                    <a href="index.php" class="home active"><i class="material-icons">home</i> Home</a>
                     <a href="about.html" class="about"><i class="material-icons">info</i> About</a>  
                     <a href="reserve.php" class="reserve"><i class="material-icons">car_rental</i> Reservations</a>
                 </div>    
@@ -166,6 +110,7 @@ mysqli_close($connection);
                     <button type="submit"><i class="material-icons">search</i></button>
                     </form>
             </div>
+
             <div class="car-cat">
                 <div class="dropdown">
                 <a href="#" class="category drop-trigger" data-category="car-type"><i class="material-icons">arrow_drop_down</i> Car Type</a>
@@ -183,113 +128,36 @@ mysqli_close($connection);
                 </div>
             </div>
             </div>
-            <a href="cart.html">
+
+            <a href="cart.php">
                 <button id="cart-button"><i class="material-icons">shopping_cart</i></button>
             </a>
+
             <div class="row">
                 <div class="display">
-                    <div class="item">
-                        <img src="images/dog1.jpg" height="125">
+                    <div class="item">     
+                        <img src="<?= htmlspecialchars($car['image']) ?>" height="125" alt="<?= htmlspecialchars($car['brand'].' '.$car['model']) ?>">
                         <div class="item-content">
-                            <h3>Item 1</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
+                            <h3><?= htmlspecialchars($car['brand'].' '.$car['model']) ?></h3>
+                            <p><?= htmlspecialchars($car['year'].' • '.$car['mileage'].' • '.$car['fuelType']) ?></p>
+                            <p class="price">$<?= number_format($car['pricePerDay'], 2) ?>/day</p>
+                            <form method="post" action="">
+                                <input type="hidden" name="car_id" value="<?= $car['id'] ?>">
+                                <div class="rental-controls">
+                                    <label>Rental Days:
+                                        <input type="number" name="rental_days" value="1" min="1" max="30">
+                                    </label>
+                                    <button type="submit" name="add_to_cart" class="add-to-cart" <?= $car['available'] ? '' : 'disabled' ?>>
+                                        <span class="cart-text"><?= $car['available'] ? 'RENT NOW' : 'UNAVAILABLE' ?></span>
+                                        <i class="material-icons cart-icon">directions_car</i>
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <div class="item">
-                        <img src="images/dog2.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 2</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="images/dog3.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 3</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="images/dog4.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 4</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="images/dog5.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 5</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="images/dog6.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 6</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="images/dog7.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 7</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="images/dog8.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 8</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="images/dog9.jpg" height="125">
-                        <div class="item-content">
-                            <h3>Item 9</h3>
-                            <p>item description</p>
-                            <p class="price">price</p>
-                            <button type="submit" class="add-to-cart">
-                                <p>ADD TO CART <i class="material-icons">add_shopping_cart</i></p>
-                            </button>
-                        </div>
-                    </div>  
+                
                 </div>
-
-            
+            </div>
         </main>
 
         <footer>
