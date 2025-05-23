@@ -1,65 +1,50 @@
-<?php 
-// cart
-session_start();
+<?php
+    // read cars.json file from local disk
+    $strJSONContents = file_get_contents("cars.json");
 
-// Initialize cart if it doesn't exist
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
+    // Decode it:
+    // When the second argument is true, JSON objects will be returned as associative arrays; 
+    // when the second argument is false, JSON objects will be returned as objects.
+    $array = json_decode($strJSONContents, true);
 
-//loading JSON data
-$jsonData = file_get_contents('data/cars.json');
-$data = json_decode($jsonData, true);
-$cars = $data['cars'];
+    
+    $display = [];
 
-// Handle add to cart requests
-IF (ISSET($_POST['add_to_cart'])){
-    $carId = (int)$_POST['car_id'];
-    $rentalDays = isset($_POST['rental_days']) ? (int)$_POST['rental_days'] : 1;
-
-    //find car in JSON data
-    $selectedCar = null;
-    foreach($cars as $car) {
-        if($car['id'] === $carId){
-            $selectedCar = $car;
-            break;
-        }
+    //filter display via users input in searchbar
+    if(isset($_REQUEST['searchedCar'])){
+        $keyword = $_REQUEST['searchedCar'];
+        $filtered = array_filter($array['cars'], function($car) use ($keyword){
+            //https://www.php.net/manual/en/function.str-contains.php
+            //http://stackoverflow.com/questions/53571988/how-to-filter-json-in-php
+                return str_contains(strtolower($car['carType']), strtolower(strtolower($keyword))) ||
+                str_contains(strtolower($car['brand']), strtolower(strtolower($keyword))) ||
+                str_contains(strtolower($car['carModel']), strtolower(strtolower($keyword))) ||
+                str_contains(strtolower($car['description']), strtolower(strtolower($keyword)));
+        });
+        $display['cars'] = $filtered;
     }
-    if($selectedCar && $selectedCar['avaliable']){
-        if(isset($_SESSION['cart'][$carId])){
-            $_SESSION['cart'][$carId]['days'] += $rentalDays;
-        } else{
-            $_SESSION['cart'][$carId] = [
-                'model' => $selectedCar['model'],
-                'brand' => $selectedCar['brand'],
-                'pricePerDay' => $selectedCar['pricePerDay'],
-                'days' => $rentalDays,
-                'image' => $selectedCar['image']
-            ];
-        }
-    } else{
-        $_SESSION['error'] = "This car is not available to rent.";
+    else if(isset($_REQUEST['car_type'])){
+        $type = $_REQUEST['car_type'];
+        //filter through the json array using the request: TYPE
+        $filtered = array_filter($array['cars'], function($car) use ($type){
+            return strtolower($car['carType']) === strtolower($type);
+        });
+        //populate the array with the filtered data
+        $display['cars'] = $filtered;
     }
-    header("Location: ".$_SERVER['PHP_SELF']);
-    exit();
-}
-
-// category filter
-$filteredCars = $cars;
-if (isset($_GET['category'])) {
-    $category = $_GET['category'];
-    $filteredCars = array_filter($cars, function($car) use ($category) {
-        return strtolower($car['carType']) === strtolower($category);
-    });
-}
-// Search functionality
-if (isset($_GET['search']) && !empty($_GET['search'])) {
-    $searchTerm = strtolower($_GET['search']);
-    $filteredCars = array_filter($filteredCars, function($car) use ($searchTerm) {
-        return strpos(strtolower($car['brand']), $searchTerm) !== false ||
-               strpos(strtolower($car['model']), $searchTerm) !== false;
-    });
-}
+    else if(isset($_REQUEST['car_brand'])){
+        $brand = $_REQUEST['car_brand'];
+        //filter through the json array using the request: TYPE
+        $filtered = array_filter($array['cars'], function($car) use ($brand){
+            return strtolower($car['brand']) === strtolower($brand);
+        });
+        //populate the array with the filtered data
+        $display['cars'] = $filtered;
+    }
+    else{
+        //display all cars
+        $display = $array;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -135,9 +120,14 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
 
             <div class="row">
                 <div class="display">
+                    <?php
+                        //Traverse the cars collection and print out each car
+                        foreach($display["cars"] as &$cars){
+                    ?>
                     <div class="item">     
                         <img src="<?= htmlspecialchars($car['image']) ?>" height="125" alt="<?= htmlspecialchars($car['brand'].' '.$car['model']) ?>">
                         <div class="item-content">
+                            <h3><?= $cars['carType'] ?></h3>
                             <h3><?= htmlspecialchars($car['brand'].' '.$car['model']) ?></h3>
                             <p><?= htmlspecialchars($car['year'].' • '.$car['mileage'].' • '.$car['fuelType']) ?></p>
                             <p class="price">$<?= number_format($car['pricePerDay'], 2) ?>/day</p>
@@ -155,7 +145,9 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
                             </form>
                         </div>
                     </div>
-                
+                    <?php
+                    }
+                    ?>
                 </div>
             </div>
         </main>

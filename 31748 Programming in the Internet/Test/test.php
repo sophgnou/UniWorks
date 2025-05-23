@@ -316,9 +316,7 @@ mysqli_close($connection);
                             </button>
                         </div>
                     </div>  
-                </div>
-
-            
+                </div>            
         </main>
 
         <footer>
