@@ -367,6 +367,10 @@ span {
     background-color: #f3c200;
     transform: scale(1.02);
 }
+.add-to-cart:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
 
 
 /* Footer */

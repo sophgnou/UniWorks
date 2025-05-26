@@ -120,34 +120,33 @@
 
             <div class="row">
                 <div class="display">
-                    <?php
-                        //Traverse the cars collection and print out each car
-                        foreach($display["cars"] as &$cars){
-                    ?>
-                    <div class="item">     
-                        <img src="<?= htmlspecialchars($car['image']) ?>" height="125" alt="<?= htmlspecialchars($car['brand'].' '.$car['model']) ?>">
-                        <div class="item-content">
-                            <h3><?= $cars['carType'] ?></h3>
-                            <h3><?= htmlspecialchars($car['brand'].' '.$car['model']) ?></h3>
-                            <p><?= htmlspecialchars($car['year'].' • '.$car['mileage'].' • '.$car['fuelType']) ?></p>
-                            <p class="price">$<?= number_format($car['pricePerDay'], 2) ?>/day</p>
-                            <form method="post" action="">
-                                <input type="hidden" name="car_id" value="<?= $car['id'] ?>">
-                                <div class="rental-controls">
-                                    <label>Rental Days:
-                                        <input type="number" name="rental_days" value="1" min="1" max="30">
-                                    </label>
-                                    <button type="submit" name="add_to_cart" class="add-to-cart" <?= $car['available'] ? '' : 'disabled' ?>>
-                                        <span class="cart-text"><?= $car['available'] ? 'RENT NOW' : 'UNAVAILABLE' ?></span>
-                                        <i class="material-icons cart-icon">directions_car</i>
-                                    </button>
-                                </div>
-                            </form>
+                    <?php foreach($display["cars"] as $car): ?>
+                        <div class="item">
+                            <img src="<?= htmlspecialchars($car['image']) ?>" height="125" alt="<?= htmlspecialchars($car['brand'].' '.$car['carModel']) ?>">
+                            <div class="item-content">
+                                <h3><?= htmlspecialchars($car['brand'].' '.$car['carModel']) ?></h3>
+                                <p><strong>Type:</strong> <?= htmlspecialchars($car['carType']) ?></p>
+                                <p><strong>Year:</strong> <?= htmlspecialchars($car['yearOfManufacture']) ?></p>
+                                <p><strong>Mileage:</strong> <?= htmlspecialchars($car['mileage']) ?></p>
+                                <p><strong>Fuel:</strong> <?= htmlspecialchars($car['fuelType']) ?></p>
+                                <p class="price">$<?= number_format($car['pricePerDay'], 2) ?>/day</p>
+                                <p><?= htmlspecialchars($car['description']) ?></p>
+                                
+                                <form method="post" action="">
+                                    <input type="hidden" name="car_id" value="<?= $car['vin'] ?>">
+                                    <div class="rental-controls">
+                                        <label>Rental Days:
+                                            <input type="number" name="rental_days" value="1" min="1" max="30">
+                                        </label>
+                                        <button type="submit" name="add_to_cart" class="add-to-cart" <?= $car['available'] ? '' : 'disabled' ?>>
+                                            <span class="cart-text"><?= $car['available'] ? 'RENT NOW' : 'UNAVAILABLE' ?></span>
+                                            <i class="material-icons cart-icon">directions_car</i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                    <?php
-                    }
-                    ?>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </main>
