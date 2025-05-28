@@ -122,7 +122,12 @@
                 <div class="display">
                     <?php foreach($display["cars"] as $car): ?>
                         <div class="item">
-                            <img src="<?= htmlspecialchars($car['image']) ?>" height="125" alt="<?= htmlspecialchars($car['brand'].' '.$car['carModel']) ?>">
+                            <div class="car-image-container">
+                                <img src="<?= htmlspecialchars($car['image']) ?>" 
+                                    alt="<?= htmlspecialchars($car['brand'].' '.$car['carModel']) ?>"
+                                    class="car-image"
+                                    onerror="this.onerror=null;this.src='images/default-car.jpg';">
+                            </div>
                             <div class="item-content">
                                 <h3><?= htmlspecialchars($car['brand'].' '.$car['carModel']) ?></h3>
                                 <p><strong>Type:</strong> <?= htmlspecialchars($car['carType']) ?></p>
@@ -130,7 +135,7 @@
                                 <p><strong>Mileage:</strong> <?= htmlspecialchars($car['mileage']) ?></p>
                                 <p><strong>Fuel:</strong> <?= htmlspecialchars($car['fuelType']) ?></p>
                                 <p class="price">$<?= number_format($car['pricePerDay'], 2) ?>/day</p>
-                                <p><?= htmlspecialchars($car['description']) ?></p>
+                                <p class="description"><?= htmlspecialchars($car['description']) ?></p>
                                 
                                 <form method="post" action="">
                                     <input type="hidden" name="car_id" value="<?= $car['vin'] ?>">
